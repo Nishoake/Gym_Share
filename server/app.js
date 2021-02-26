@@ -1,5 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const graphqlExpress = require('apollo-server-express')
+
+const myGraphQLSchema = // ... define or import your schema here!
 
 require('dotenv').config()
 
@@ -7,6 +10,7 @@ app = express()
 
 // Middleware
 app.use(bodyParser.json())
+app.use('/graphql', bodyParser.json(), graphqlExpress({ schema: myGraphQLSchema }))
 
 // Intialize port
 const port = process.env.PORT || 3006
