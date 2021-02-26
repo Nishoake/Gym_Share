@@ -1,26 +1,20 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const graphqlExpress = require('apollo-server-express')
+const express = require('express');
+const { ApolloServer } = require('apollo-server-express');
+const { typeDefs, resolvers } = require('./schema');
 
-const myGraphQLSchema = // ... define or import your schema here!
+const app = express();
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
 
-require('dotenv').config()
+server.applyMiddleware({ app });
 
-app = express()
+app.use((req, res) => {
+  res.status(200);
+  res.send('Hello!');
+  res.end();
+});
 
-// Middleware
-app.use(bodyParser.json())
-app.use('/graphql', bodyParser.json(), graphqlExpress({ schema: myGraphQLSchema }))
-
-// Intialize port
-const port = process.env.PORT || 3006
-app.listen(port, () => {
-  console.log(`Gym Share app is currently listening at ${port}`)
-})
-
-// Routes
-app.get('/', async (request, response) => {
-  console.log(`The client is requesting an update on the Gym Share App`)
-
-  response.json('Train In-Saiyan 👱‍♀️')
-})
+app.listen({ port: 4000 }, () =>
+  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`))
