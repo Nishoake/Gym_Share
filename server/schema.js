@@ -80,6 +80,33 @@ let books = [
 
 // Type Definitions
 const typeDefs = gql`
+  type User {
+    id: ID!
+    name: String!
+    password_Hash: String!
+    number: Int!
+    email: String!
+    house: Int!
+    street: String!
+    city: String!
+    is_validated: Boolean!
+  }
+  type Equipment {
+    id: ID!
+    category: String!
+    weight: Int!
+    user_id: ID!
+    is_available: Boolean!
+  }
+  type Transaction {
+    id: ID!
+    lender_id: ID!
+    borrower_id: ID!
+    equipment_id: ID!
+    check_out: String!
+    check_in: String
+  }
+
   type Author {
     name: String!
     id: ID
@@ -93,23 +120,56 @@ const typeDefs = gql`
     id: ID!
     genres: [String!]!
   }
-  type User {
-    username: String!
-    favoriteGenre: String!
-    id: ID!
-  }
   type Token {
     value: String!
   }
   type Query {
+    equipmentCount: Int!
+    userCount: Int!
+    allEquipment(user: String): [Equipment!]!
+    allUsers: [User!]!
+    me: User
+
     bookCount: Int!
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
-    allAuthors: [Author!]!
-    me: User
-    allUsers: [User!]!
   }
   type Mutation {
+    addEquipment(
+      category: String!
+      weight: Int!
+    ): Equipment
+    addHold(
+      is_available: Boolean!
+    ): Equipment
+    removeHold(
+      is_available: Boolean!
+    ): Equipment
+    checkOut(
+      check_out: String!
+    ): Transaction
+    checkIn(
+      check_in: String!
+    ): Transaction
+    editUser(
+      house: Int!
+      street: String!
+      city: String!
+    ): User
+    createUser(
+      name: String!
+      number: Int!
+      email: String!
+      house: Int!
+      street: String!
+      city: String!
+    ): User
+    login(
+      email: String!
+      password: String!
+    ): Token
+
+    
     addBook(
       title: String!
       published: Int!

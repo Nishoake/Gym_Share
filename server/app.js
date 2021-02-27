@@ -12,7 +12,7 @@ server.applyMiddleware({ app });
 
 app.use((req, res) => {
   res.status(200);
-  res.send('Hello!');
+  res.send('Train in Saiyan 👱‍♀️');
   res.end();
 });
 
