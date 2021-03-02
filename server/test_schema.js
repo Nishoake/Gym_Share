@@ -1,23 +1,96 @@
 const { UserInputError, gql, AuthenticationError } = require('apollo-server')
 const crypto = require("crypto")
 
-require('dotenv').config()
+// const { Client } = require('pg')
 
-const { Pool } = require('pg')
+// const client = new Client({
+//   connectionString: process.env.DATABASE_URL,
+//   ssl: {
+//     rejectUnauthorized: false
+//   }
+// })
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-})
+// client.connect();
 
-// the pool will emit an error on behalf of any idle clients
-// it contains if a backend error or network partition happens
-pool.on('error', (err, client) => {
-  console.error('Unexpected error on idle client', err)
-  process.exit(-1)
-})
+// client.query('S')
+
+// let authors = [
+//   {
+//     name: 'Robert Martin',
+//     id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
+//     born: 1952,
+//   },
+//   {
+//     name: 'Martin Fowler',
+//     id: "afa5b6f0-344d-11e9-a414-719c6709cf3e",
+//     born: 1963
+//   },
+//   {
+//     name: 'Fyodor Dostoevsky',
+//     id: "afa5b6f1-344d-11e9-a414-719c6709cf3e",
+//     born: 1821
+//   },
+//   {
+//     name: 'Joshua Kerievsky', // birthyear not known
+//     id: "afa5b6f2-344d-11e9-a414-719c6709cf3e",
+//   },
+//   {
+//     name: 'Sandi Metz', // birthyear not known
+//     id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
+//   },
+// ]
+
+// let books = [
+//   {
+//     title: 'Clean Code',
+//     published: 2008,
+//     author: 'Robert Martin',
+//     id: "afa5b6f4-344d-11e9-a414-719c6709cf3e",
+//     genres: ['refactoring']
+//   },
+//   {
+//     title: 'Agile software development',
+//     published: 2002,
+//     author: 'Robert Martin',
+//     id: "afa5b6f5-344d-11e9-a414-719c6709cf3e",
+//     genres: ['agile', 'patterns', 'design']
+//   },
+//   {
+//     title: 'Refactoring, edition 2',
+//     published: 2018,
+//     author: 'Martin Fowler',
+//     id: "afa5de00-344d-11e9-a414-719c6709cf3e",
+//     genres: ['refactoring']
+//   },
+//   {
+//     title: 'Refactoring to patterns',
+//     published: 2008,
+//     author: 'Joshua Kerievsky',
+//     id: "afa5de01-344d-11e9-a414-719c6709cf3e",
+//     genres: ['refactoring', 'patterns']
+//   },
+//   {
+//     title: 'Practical Object-Oriented Design, An Agile Primer Using Ruby',
+//     published: 2012,
+//     author: 'Sandi Metz',
+//     id: "afa5de02-344d-11e9-a414-719c6709cf3e",
+//     genres: ['refactoring', 'design']
+//   },
+//   {
+//     title: 'Crime and punishment',
+//     published: 1866,
+//     author: 'Fyodor Dostoevsky',
+//     id: "afa5de03-344d-11e9-a414-719c6709cf3e",
+//     genres: ['classic', 'crime']
+//   },
+//   {
+//     title: 'The Demon ',
+//     published: 1872,
+//     author: 'Fyodor Dostoevsky',
+//     id: "afa5de04-344d-11e9-a414-719c6709cf3e",
+//     genres: ['classic', 'revolution']
+//   },
+// ]
 
 // Type Definitions
 const typeDefs = gql`
@@ -101,114 +174,52 @@ const typeDefs = gql`
 // Resolvers' logic
 const resolvers = {
   Query: {
-    helloWorld: async () => {
-      const client = await pool.connect()
-      try {
-        const { rows } = await client.query('SELECT name FROM test_table where id = $1', [1])
-        console.table(rows)
-        return rows[0].name
-
-      } catch (error) {
-        console.log(`WARNING: ${error}`)
-      } finally {
-        client.release()
-        console.log('Client has been successfully released!')
-      }
-    },
+    // bookCount: () => Book.collection.countDocuments(),
 
 
-    userCount: async () => {
-      const client = await pool.connect()
-      try {
-        const { rows } = await client.query('SELECT COUNT (id) FROM user_table')
-        console.table(rows)
-        return rows[0].count
-
-      } catch (error) {
-        console.log(`WARNING: ${error}`)
-      } finally {
-        client.release()
-        console.log('Client has been successfully released!')
-      }
-    },
+    // authorCount: () => Author.collection.countDocuments(),
 
 
-    equipmentCount: async () => {
-      const client = await pool.connect()
-      try {
-        const { rows } = await client.query('SELECT COUNT (id) FROM equipment')
-        console.table(rows)
-        return rows[0].count
+    // allBooks: async (root, args) => {
+    //   // Fetch all saved book objects and populate the 'author' field
+    //   const books = await Book.find({}).populate("author")
 
-      } catch (error) {
-        console.log(`WARNING: ${error}`)
-      } finally {
-        client.release()
-        console.log('Client has been successfully released!')
-      }
-    },
+    //   // Filter books by author
+    //   async function authorFilter(bookToFilter) {
+    //     const authorBooks = bookToFilter.filter(book => book.author.name === args.author)
 
+    //     return authorBooks
+    //   }
 
-    allEquipment: async () => {
-      const client = await pool.connect()
-      try {
-        const { rows } = await client.query('SELECT * FROM equipment')
-        console.table(rows)
-        return rows
+    //   // Filter books by genre
+    //   async function genreFilter(bookToFilter) {
+    //     const genreBooks = bookToFilter.filter(book => book.genres.includes(args.genre))
 
-      } catch (error) {
-        console.log(`WARNING: ${error}`)
-      } finally {
-        client.release()
-        console.log('Client has been successfully released!')
-      }
-    }
-  //   bookCount: () => Book.collection.countDocuments(),
+    //     return genreBooks
+    //   }
+
+    //   // Conditional applying each/both filter(s)
+    //   if (!args.author && !args.genre) {
+    //     return books
+    //   } else if (args.author && args.genre) {
+    //     return genreFilter(await authorFilter(books))
+    //   } else if (args.genre) {
+    //     return genreFilter(books)
+    //   }
+
+    //   return authorFilter(books)
+    // },
 
 
-  //   authorCount: () => Author.collection.countDocuments(),
+    // allAuthors: (root) => Author.find({}),
 
 
-  //   allBooks: async (root, args) => {
-  //     // Fetch all saved book objects and populate the 'author' field
-  //     const books = await Book.find({}).populate("author")
-
-  //     // Filter books by author
-  //     async function authorFilter(bookToFilter) {
-  //       const authorBooks = bookToFilter.filter(book => book.author.name === args.author)
-
-  //       return authorBooks
-  //     }
-
-  //     // Filter books by genre
-  //     async function genreFilter(bookToFilter) {
-  //       const genreBooks = bookToFilter.filter(book => book.genres.includes(args.genre))
-
-  //       return genreBooks
-  //     }
-
-  //     // Conditional applying each/both filter(s)
-  //     if (!args.author && !args.genre) {
-  //       return books
-  //     } else if (args.author && args.genre) {
-  //       return genreFilter(await authorFilter(books))
-  //     } else if (args.genre) {
-  //       return genreFilter(books)
-  //     }
-
-  //     return authorFilter(books)
-  //   },
+    // allUsers: (root) => User.find({}),
 
 
-  //   allAuthors: (root) => Author.find({}),
-
-
-  //   allUsers: (root) => User.find({}),
-
-
-  //   me: (root, args, context) => {
-  //     return context.currentUser
-  //   },
+    // me: (root, args, context) => {
+    //   return context.currentUser
+    // },
   },
 
 
@@ -222,7 +233,7 @@ const resolvers = {
 
 
 
-  // Mutation: {
+  Mutation: {
   //   addBook: async (root, args, context) => {
   //     // only possible if request includes valid token
   //     const currentUser = context.currentUser
@@ -332,7 +343,7 @@ const resolvers = {
   //     return { value: jwt.sign(userForToken, JWT_SECRET) }
   //   },
 
-  // }
+  }
 }
 
 exports.typeDefs = typeDefs
