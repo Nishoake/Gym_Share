@@ -1,5 +1,6 @@
 const { UserInputError, gql, AuthenticationError } = require('apollo-server')
 const crypto = require("crypto")
+const bcryptjs = require("bcryptjs")
 
 require('dotenv').config()
 
@@ -24,8 +25,8 @@ const typeDefs = gql`
   type User {
     id: ID!
     name: String!
-    password_Hash: String!
-    number: Int!
+    password_Hash: String
+    number: String!
     email: String!
     house: Int!
     street: String!
@@ -84,11 +85,11 @@ const typeDefs = gql`
     ): User
     createUser(
       name: String!
-      number: Int!
       email: String!
       house: Int!
       street: String!
       city: String!
+      password: String!
     ): User
     login(
       email: String!
@@ -149,6 +150,22 @@ const resolvers = {
     },
 
 
+    allUsers: async () => {
+      const client = await pool.connect()
+      try {
+        const { rows } = await client.query('SELECT * FROM user_table')
+        console.table(rows)
+        return rows
+
+      } catch (error) {
+        console.log(`WARNING: ${error}`)
+      } finally {
+        client.release()
+        console.log('Client has been successfully released!')
+      }
+    },
+
+
     allEquipment: async () => {
       const client = await pool.connect()
       try {
@@ -163,10 +180,6 @@ const resolvers = {
         console.log('Client has been successfully released!')
       }
     }
-  //   bookCount: () => Book.collection.countDocuments(),
-
-
-  //   authorCount: () => Author.collection.countDocuments(),
 
 
   //   allBooks: async (root, args) => {
@@ -213,16 +226,39 @@ const resolvers = {
 
 
 
-  // Author: {
-  //   bookCount: async (root) => {
-  //     const booksWritten = await Book.find({ author: { $in: root._id } })
-  //     return booksWritten.length
-  //   }
-  // },
+  Mutation: {
+    createUser: async (root, args, context) => {
+      const client = await pool.connect()
 
+      // Generate an id
+      const id = crypto.randomBytes(8).toString("hex");
+      
+      // Generate a password hash
+      const saltRounds = 10
+      const hashed = await bcryptjs.hash(args.password, saltRounds)
 
+      const values = [
+        id,
+        args.name,
+        hashed,
+        args.email,
+        args.house,
+        args.street,
+        args.city,
+      ]
+      
+      try {
+        const { rows } = await client.query('INSERT INTO user_table (id, name, password_hash, email, house, street, city) VALUES ($1, $2, $3, $4, $5, $6, $7)', values)
+        console.table(rows)
+        return rows
 
-  // Mutation: {
+      } catch (error) {
+        console.log(`WARNING: ${error}`)
+      } finally {
+        client.release()
+        console.log('Client has been successfully released!')
+      }
+    }
   //   addBook: async (root, args, context) => {
   //     // only possible if request includes valid token
   //     const currentUser = context.currentUser
@@ -332,7 +368,7 @@ const resolvers = {
   //     return { value: jwt.sign(userForToken, JWT_SECRET) }
   //   },
 
-  // }
+  }
 }
 
 exports.typeDefs = typeDefs
