@@ -25,7 +25,7 @@ const typeDefs = gql`
   type User {
     id: ID!
     name: String!
-    password_Hash: String
+    password_hash: String
     number: String!
     email: String!
     house: Int!
