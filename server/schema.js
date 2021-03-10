@@ -63,6 +63,7 @@ const typeDefs = gql`
 
   type Mutation {
     addEquipment(
+      user_id: String!
       category: String!
       weight: Int!
     ): Equipment
@@ -228,10 +229,11 @@ const resolvers = {
 
   Mutation: {
     createUser: async (root, args, context) => {
+      console.log(`args = ${JSON.stringify(args)}`)
       const client = await pool.connect()
 
       // Generate an id
-      const id = crypto.randomBytes(8).toString("hex");
+      const id = crypto.randomBytes(8).toString("hex")
       
       // Generate a password hash
       const saltRounds = 10
@@ -249,6 +251,38 @@ const resolvers = {
       
       try {
         const { rows } = await client.query('INSERT INTO user_table (id, name, password_hash, email, house, street, city) VALUES ($1, $2, $3, $4, $5, $6, $7)', values)
+        console.table(rows)
+        return rows
+
+      } catch (error) {
+        console.log(`WARNING: ${error}`)
+      } finally {
+        client.release()
+        console.log('Client has been successfully released!')
+      }
+    },
+
+    addEquipment: async (root, args, context) => {
+      console.log(`args = ${JSON.stringify(args)}`)
+      const client = await pool.connect()
+
+      // Generate an id
+      const id = crypto.randomBytes(8).toString("hex")
+
+      const values = [
+        id,
+        args.user_id,
+        args.category,
+        args.weight,
+      ]
+      
+      try {
+        // const { rows } = await client.query('INSERT INTO equipment (id, user_id, category, weight) VALUES ($1, $2, $3, $4)', values)
+        // console.table(rows)
+        // console.log(`rows = ${JSON.stringify(rows[0])}`)
+        // return rows[0]
+        
+        const { rows } = await client.query('INSERT INTO equipment (id, user_id, category, weight) VALUES ($1, $2, $3, $4)', values)
         console.table(rows)
         return rows
 
@@ -367,6 +401,12 @@ const resolvers = {
   //     // remember the token has only field which is value
   //     return { value: jwt.sign(userForToken, JWT_SECRET) }
   //   },
+
+  // id,
+  //   user_id,
+  //   category,
+  //   weight,
+  //   is_available
 
   }
 }
