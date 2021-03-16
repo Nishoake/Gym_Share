@@ -69,10 +69,10 @@ const typeDefs = gql`
       weight: Int!
     ): Equipment
     placeHold(
-      is_available: Boolean!
+      id: String!
     ): Equipment
     removeHold(
-      is_available: Boolean!
+      id: String!
     ): Equipment
     checkOut(
       check_out: String!
@@ -257,10 +257,10 @@ const resolvers = {
         return rows[0]
 
       } catch (error) {
-        console.log(`WARNING: ${error}`)
+          console.log(`WARNING: ${error}`)
       } finally {
-        client.release()
-        console.log('Client has been successfully released!')
+          client.release()
+          console.log('Client has been successfully released!')
       }
     },
 
@@ -285,12 +285,35 @@ const resolvers = {
         return rows[0]
 
       } catch (error) {
-        console.log(`WARNING: ${error}`)
+          console.log(`WARNING: ${error}`)
       } finally {
-        client.release()
-        console.log('Client has been successfully released!')
+          client.release()
+          console.log('Client has been successfully released!')
       }
-    }
+    },
+
+    placeHold: async (root, args, context) => {
+      console.log(`args = ${JSON.stringify(args)}`)
+      const client = await pool.connect()
+
+      const values = [
+        args.id
+      ]
+      
+      try {
+        
+        const { rows } = await client.query('UPDATE equipment SET on_hold = true WHERE id = ($1) RETURNING *', values)
+        console.table(rows)
+        return rows[0]
+
+      } catch (error) {
+          console.log(`WARNING: ${error}`)
+      } finally {
+          client.release()
+          console.log('Client has been successfully released!')
+      }
+    },
+
   //   addBook: async (root, args, context) => {
   //     // only possible if request includes valid token
   //     const currentUser = context.currentUser
