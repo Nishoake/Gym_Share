@@ -39,6 +39,7 @@ const typeDefs = gql`
     weight: Int!
     user_id: ID!
     is_available: Boolean!
+    on_hold: Boolean!
   }
   type Transaction {
     id: ID!
@@ -67,7 +68,7 @@ const typeDefs = gql`
       category: String!
       weight: Int!
     ): Equipment
-    addHold(
+    placeHold(
       is_available: Boolean!
     ): Equipment
     removeHold(
@@ -172,6 +173,7 @@ const resolvers = {
       try {
         const { rows } = await client.query('SELECT * FROM equipment')
         console.table(rows)
+        console.log(rows)
         return rows
 
       } catch (error) {
@@ -250,9 +252,9 @@ const resolvers = {
       ]
       
       try {
-        const { rows } = await client.query('INSERT INTO user_table (id, name, password_hash, email, house, street, city) VALUES ($1, $2, $3, $4, $5, $6, $7)', values)
+        const { rows } = await client.query('INSERT INTO user_table (id, name, password_hash, email, house, street, city) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', values)
         console.table(rows)
-        return rows
+        return rows[0]
 
       } catch (error) {
         console.log(`WARNING: ${error}`)
@@ -277,14 +279,10 @@ const resolvers = {
       ]
       
       try {
-        // const { rows } = await client.query('INSERT INTO equipment (id, user_id, category, weight) VALUES ($1, $2, $3, $4)', values)
-        // console.table(rows)
-        // console.log(`rows = ${JSON.stringify(rows[0])}`)
-        // return rows[0]
         
-        const { rows } = await client.query('INSERT INTO equipment (id, user_id, category, weight) VALUES ($1, $2, $3, $4)', values)
+        const { rows } = await client.query('INSERT INTO equipment (id, user_id, category, weight) VALUES ($1, $2, $3, $4) RETURNING *', values)
         console.table(rows)
-        return rows
+        return rows[0]
 
       } catch (error) {
         console.log(`WARNING: ${error}`)
