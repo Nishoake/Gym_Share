@@ -1,6 +1,7 @@
 const { UserInputError, gql, AuthenticationError } = require('apollo-server')
 const crypto = require("crypto")
 const bcryptjs = require("bcryptjs")
+const jwt = require("jsonwebtoken")
 
 require('dotenv').config()
 
@@ -38,8 +39,8 @@ const typeDefs = gql`
     category: String!
     weight: Int!
     user_id: ID!
-    is_available: Boolean!
-    on_hold: Boolean!
+    transaction_id: ID
+    hold_user_id: ID
   }
   type Transaction {
     id: ID!
@@ -75,10 +76,14 @@ const typeDefs = gql`
       id: String!
     ): Equipment
     checkOut(
-      check_out: String!
+      equipment_id: String!
+      lender_id: String!
+      borrower_id: String!
     ): Transaction
     checkIn(
-      check_in: String!
+      equipment_id: String!
+      lender_id: String!
+      borrower_id: String!
     ): Transaction
     editUser(
       house: Int!
@@ -335,6 +340,43 @@ const resolvers = {
           console.log('Client has been successfully released!')
       }
     },
+
+    login: async (root, args, context) => {
+      const client = await pool.connect()
+
+      try {
+        // find user in PG using the provided email
+        const { rows } = await client.query('SELECT * from user_table WHERE email = ($1)', [args.email])
+        const user = rows[0]
+        const pwh = user.password_hash
+
+        // Authenticate the user based on credentials
+        const passwordCorrect = user === null
+          ? false
+          : await bcryptjs.compare(args.password, pwh)
+        
+        // If incorrect execution jumps to the catch block
+        if(!(user && passwordCorrect)){
+          throw new UserInputError("wrong credentials")
+        }
+
+        // For now just send the user's id
+        const payload = {
+          id: user.id
+        }
+
+        // Create the token
+        const token = jwt.sign(payload, process.env.JWT_SECRET)
+
+        // Send the token
+        return {value: token}
+      } catch (error) {
+          throw new UserInputError("wrong credentials")
+      } finally {
+          client.release()
+          console.log('Client has been successfully released!')
+      }
+    }
 
   //   addBook: async (root, args, context) => {
   //     // only possible if request includes valid token
