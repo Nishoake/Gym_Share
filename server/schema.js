@@ -47,8 +47,8 @@ const typeDefs = gql`
     lender_id: ID!
     borrower_id: ID!
     equipment_id: ID!
-    check_out: String!
-    check_in: String
+    check_out_timestamp: String!
+    check_in_timestamp: String
   }
   type Token {
     value: String!
@@ -76,14 +76,10 @@ const typeDefs = gql`
       id: String!
     ): Equipment
     checkOut(
-      equipment_id: String!
-      lender_id: String!
-      borrower_id: String!
+      id: String!
     ): Transaction
     checkIn(
-      equipment_id: String!
-      lender_id: String!
-      borrower_id: String!
+      id: String!
     ): Transaction
     editUser(
       house: Int!
@@ -298,7 +294,6 @@ const resolvers = {
     },
 
     placeHold: async (root, args, context) => {
-      console.log(`args = ${JSON.stringify(args)}`)
       const client = await pool.connect()
 
       const values = [
@@ -321,7 +316,6 @@ const resolvers = {
     },
 
     removeHold: async (root, args, context) => {
-      console.log(`args = ${JSON.stringify(args)}`)
       const client = await pool.connect()
 
       const values = [
@@ -330,7 +324,6 @@ const resolvers = {
       ]
       
       try {
-        
         const { rows } = await client.query('UPDATE equipment SET hold_user_id = NULL WHERE user_id = ($1) AND id = ($2) RETURNING *', values)
         console.table(rows)
         return rows[0]
@@ -340,6 +333,43 @@ const resolvers = {
       } finally {
           client.release()
           console.log('Client has been successfully released!')
+      }
+    },
+
+    checkOut: async (root, args, context) => {
+      const client = await pool.connect()
+
+      try {
+        // Retrieve the ID of the user that placed the hold
+        const { rows } = await client.query('SELECT hold_user_id FROM equipment WHERE id = ($1) AND user_id = ($2)', [args.id, context.currentUser.id])
+        const hold_user_id = rows[0].hold_user_id
+        
+        // Generate the necessary data to create a transaction
+        // Create the transaction ID
+        const id = crypto.randomBytes(8).toString("hex")
+
+        // Create the Check Out Timestamp
+        const currentTS = Date.now()
+        const checkOutTS = new Date(currentTS).toLocaleString('en-US', { timeZone: 'America/Toronto' })
+
+        const values = [
+          id,
+          hold_user_id,
+          context.currentUser.id,
+          args.id,
+          checkOutTS
+        ]
+
+        const result = await client.query('INSERT INTO transactions (id, borrower_id, lender_id, equipment_id, check_out_timestamp) VALUES ($1, $2, $3, $4, $5) RETURNING *', values)
+        console.table(result.rows)
+        console.log(`CO: ${result.rows[0].check_out_timestamp}`)
+        return result.rows[0]
+
+      } catch (error) {
+        console.log(`WARNING: ${error}`)
+      } finally {
+        client.release()
+        console.log('Client has been successfully released!')
       }
     },
 

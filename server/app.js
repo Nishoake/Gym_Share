@@ -49,7 +49,7 @@ const server = new ApolloServer({
         // This is portion is expendable
         const { rows } = await client.query('SELECT * from user_table WHERE id = ($1)', [decodedToken.id])
         const currentUser = rows[0]
-        console.log(`CurrentUser = ${currentUser}`)
+        // console.log(`CurrentUser = ${currentUser}`)
         return { currentUser }
       }
     } catch (error) {
