@@ -56,7 +56,7 @@ const server = new ApolloServer({
         console.log(`WARNING: ${error}`)
     } finally {
         client.release()
-        console.log('Client has been successfully released!')
+        // console.log('Client has been successfully released!')
     }
     
   

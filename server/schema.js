@@ -302,12 +302,13 @@ const resolvers = {
       const client = await pool.connect()
 
       const values = [
+        context.currentUser.id,
         args.id
       ]
       
       try {
         
-        const { rows } = await client.query('UPDATE equipment SET on_hold = true WHERE id = ($1) RETURNING *', values)
+        const { rows } = await client.query('UPDATE equipment SET hold_user_id = ($1) WHERE id = ($2) RETURNING *', values)
         console.table(rows)
         return rows[0]
 
@@ -324,12 +325,13 @@ const resolvers = {
       const client = await pool.connect()
 
       const values = [
+        context.currentUser.id,
         args.id
       ]
       
       try {
         
-        const { rows } = await client.query('UPDATE equipment SET on_hold = false WHERE id = ($1) RETURNING *', values)
+        const { rows } = await client.query('UPDATE equipment SET hold_user_id = NULL WHERE user_id = ($1) AND id = ($2) RETURNING *', values)
         console.table(rows)
         return rows[0]
 
@@ -356,7 +358,7 @@ const resolvers = {
           : await bcryptjs.compare(args.password, pwh)
         
         // If incorrect execution jumps to the catch block
-        if(!(user && passwordCorrect)){
+        if (!(user && passwordCorrect)){
           throw new UserInputError("wrong credentials")
         }
 
