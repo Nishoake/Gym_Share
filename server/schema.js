@@ -65,7 +65,6 @@ const typeDefs = gql`
 
   type Mutation {
     addEquipment(
-      user_id: String!
       category: String!
       weight: Int!
     ): Equipment
@@ -184,48 +183,6 @@ const resolvers = {
         console.log('Client has been successfully released!')
       }
     }
-
-
-  //   allBooks: async (root, args) => {
-  //     // Fetch all saved book objects and populate the 'author' field
-  //     const books = await Book.find({}).populate("author")
-
-  //     // Filter books by author
-  //     async function authorFilter(bookToFilter) {
-  //       const authorBooks = bookToFilter.filter(book => book.author.name === args.author)
-
-  //       return authorBooks
-  //     }
-
-  //     // Filter books by genre
-  //     async function genreFilter(bookToFilter) {
-  //       const genreBooks = bookToFilter.filter(book => book.genres.includes(args.genre))
-
-  //       return genreBooks
-  //     }
-
-  //     // Conditional applying each/both filter(s)
-  //     if (!args.author && !args.genre) {
-  //       return books
-  //     } else if (args.author && args.genre) {
-  //       return genreFilter(await authorFilter(books))
-  //     } else if (args.genre) {
-  //       return genreFilter(books)
-  //     }
-
-  //     return authorFilter(books)
-  //   },
-
-
-  //   allAuthors: (root) => Author.find({}),
-
-
-  //   allUsers: (root) => User.find({}),
-
-
-  //   me: (root, args, context) => {
-  //     return context.currentUser
-  //   },
   },
 
 
@@ -274,7 +231,7 @@ const resolvers = {
 
       const values = [
         id,
-        args.user_id,
+        context.currentUser.id,
         args.category,
         args.weight,
       ]
@@ -386,14 +343,21 @@ const resolvers = {
         const currentTS = Date.now()
         const checkInTS = new Date(currentTS).toLocaleString('en-US', { timeZone: 'America/Toronto' })
 
+        // Querying DB for the current transaction ID
+        const query = await client.query('SELECT transaction_id FROM equipment WHERE id = ($1)', [args.id])
+        console.table(query.rows)
+
         const values = [
           checkInTS,
-          args.id,
-          context.currentUser.id
+          query.rows[0].transaction_id
         ]
 
         // Complete the Transaction
-        const { rows } = await client.query('UPDATE transactions SET check_in_timestamp = ($1) WHERE equipment_id = ($2) AND lender_id = ($3) AND check_in_timestamp IS NULL RETURNING *', values)
+        const { rows } = await client.query('UPDATE transactions SET check_in_timestamp = ($1) WHERE id = ($2) RETURNING *', values)
+
+        // Clear the Transaction ID field
+        await client.query('UPDATE equipment SET transaction_id = NULL WHERE id = ($1)', [args.id])
+
         console.table(rows)
         return rows[0]
 
@@ -441,121 +405,6 @@ const resolvers = {
           console.log('Client has been successfully released!')
       }
     }
-
-  //   addBook: async (root, args, context) => {
-  //     // only possible if request includes valid token
-  //     const currentUser = context.currentUser
-
-  //     if (!currentUser) {
-  //       console.log('addbook error')
-  //       throw new AuthenticationError("not authenticated")
-  //     }
-
-  //     // Search for author
-  //     let author = await Author.findOne({ name: args.author })
-
-  //     // If we cannot find the author we create a new author
-  //     if (!author) {
-  //       const newAuthor = new Author({
-  //         name: args.author
-  //       })
-
-  //       try {
-  //         const savedAuthor = await newAuthor.save()
-
-  //         const book = new Book({ ...args, author: savedAuthor._id })
-
-  //         await book.save()
-
-  //         return book.populate("author").execPopulate()
-
-  //       } catch (error) {
-  //         throw new UserInputError(error.message, {
-  //           invalidArgs: args,
-  //         })
-  //       }
-  //     }
-
-  //     try {
-  //       // Use the returned author to assign the ObjectID to the author field
-  //       const book = new Book({ ...args, author: author._id })
-
-  //       await book.save()
-
-  //       return book.populate("author").execPopulate()
-
-  //     } catch (error) {
-  //       throw new UserInputError(error.message, {
-  //         invalidArgs: args,
-  //       })
-  //     }
-
-  //   },
-
-
-  //   editAuthor: async (root, args, context) => {
-  //     // only possible if request includes valid token
-  //     const currentUser = context.currentUser
-
-  //     if (!currentUser) {
-  //       throw new AuthenticationError("not authenticated")
-  //     }
-
-  //     // editing 
-  //     let updatedAuthor = await Author.findOne({ name: args.name })
-  //     if (updatedAuthor) {
-  //       try {
-  //         updatedAuthor.born = args.setBornTo
-  //         return await updatedAuthor.save()
-
-  //       } catch (error) {
-  //         throw new UserInputError(error.message, {
-  //           invalidArgs: args,
-  //         })
-  //       }
-  //     }
-
-  //     return null
-  //   },
-
-
-  //   createUser: async (root, args, context) => {
-  //     try {
-  //       // Use the returned author to assign the ObjectID to the author field
-  //       const user = new User({ ...args })
-
-  //       await user.save()
-
-  //     } catch (error) {
-  //       throw new UserInputError(error.message, {
-  //         invalidArgs: args,
-  //       })
-  //     }
-  //   },
-
-
-  //   login: async (root, args, context) => {
-  //     const user = await User.findOne({ username: args.username })
-
-  //     if (!user || args.password !== "Eren") {
-  //       throw new UserInputError("wrong credentials")
-  //     }
-
-  //     // user object we pass into the jwt function to generate a token
-  //     const userForToken = {
-  //       username: user.username,
-  //       id: user._id
-  //     }
-
-  //     // remember the token has only field which is value
-  //     return { value: jwt.sign(userForToken, JWT_SECRET) }
-  //   },
-
-  // id,
-  //   user_id,
-  //   category,
-  //   weight,
-  //   is_available
 
   }
 }
