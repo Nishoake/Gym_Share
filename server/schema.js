@@ -223,7 +223,11 @@ const resolvers = {
     },
 
     addEquipment: async (root, args, context) => {
-      console.log(`args = ${JSON.stringify(args)}`)
+      // Check for authorization
+      if (!currentUser) {
+        throw new AuthenticationError("not authorized")
+      }
+
       const client = await pool.connect()
 
       // Generate an id
@@ -251,6 +255,11 @@ const resolvers = {
     },
 
     placeHold: async (root, args, context) => {
+      // Check for authorization
+      if (!currentUser) {
+        throw new AuthenticationError("not authorized")
+      }
+
       const client = await pool.connect()
 
       const values = [
@@ -273,6 +282,11 @@ const resolvers = {
     },
 
     removeHold: async (root, args, context) => {
+      // Check for authorization
+      if (!currentUser) {
+        throw new AuthenticationError("not authorized")
+      }
+
       const client = await pool.connect()
 
       const values = [
@@ -294,6 +308,11 @@ const resolvers = {
     },
 
     checkOut: async (root, args, context) => {
+      // Check for authorization
+      if (!currentUser) {
+        throw new AuthenticationError("not authorized")
+      }
+
       const client = await pool.connect()
 
       try {
@@ -336,6 +355,11 @@ const resolvers = {
     },
     
     checkIn: async (root, args, context) => {
+      // Check for authorization
+      if (!currentUser) {
+        throw new AuthenticationError("not authorized")
+      }
+      
       const client = await pool.connect()
 
       try {
