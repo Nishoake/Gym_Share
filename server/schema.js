@@ -361,15 +361,47 @@ const resolvers = {
         ]
 
         const result = await client.query('INSERT INTO transactions (id, borrower_id, lender_id, equipment_id, check_out_timestamp) VALUES ($1, $2, $3, $4, $5) RETURNING *', values)
+        const update = await client.query('UPDATE equipment SET transaction_id = ($1), hold_user_id = NULL WHERE id = ($2) RETURNING *', [result.rows[0].id, args.id])
+
         console.table(result.rows)
         console.log(`CO: ${result.rows[0].check_out_timestamp}`)
+
+        console.table(update.rows)
+
         return result.rows[0]
 
       } catch (error) {
-        console.log(`WARNING: ${error}`)
+          console.log(`WARNING: ${error}`)
       } finally {
-        client.release()
-        console.log('Client has been successfully released!')
+          client.release()
+          console.log('Client has been successfully released!')
+      }
+    },
+    
+    checkIn: async (root, args, context) => {
+      const client = await pool.connect()
+
+      try {
+        // Create the Check In Timestamp
+        const currentTS = Date.now()
+        const checkInTS = new Date(currentTS).toLocaleString('en-US', { timeZone: 'America/Toronto' })
+
+        const values = [
+          checkInTS,
+          args.id,
+          context.currentUser.id
+        ]
+
+        // Complete the Transaction
+        const { rows } = await client.query('UPDATE transactions SET check_in_timestamp = ($1) WHERE equipment_id = ($2) AND lender_id = ($3) AND check_in_timestamp IS NULL RETURNING *', values)
+        console.table(rows)
+        return rows[0]
+
+      } catch (error) {
+          console.log(`WARNING: ${error}`)
+      } finally {
+          client.release()
+          console.log('Client has been successfully released!')
       }
     },
 
