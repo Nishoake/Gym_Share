@@ -59,8 +59,12 @@ const typeDefs = gql`
     equipmentCount: Int!
     userCount: Int!
     allEquipment(user: String): [Equipment!]!
+    allOtherEquipment(type: String): [Equipment!]!
+    myEquipment(type: String): [Equipment!]!
     allUsers: [User!]!
-    me: User
+    myBorrowingHistory: [Transaction!]!
+    myLendingHistory: [Transaction!]!
+    myAccount: User
   }
 
   type Mutation {
@@ -182,7 +186,139 @@ const resolvers = {
         client.release()
         console.log('Client has been successfully released!')
       }
-    }
+    },
+
+
+    allOtherEquipment: async (root, args, context) => {
+      const client = await pool.connect()
+
+      const values = [
+        context.currentUser.id,
+      ]
+
+      try {
+        if(args.type === 'available'){
+          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id = NULL AND hold_user_id = NULL AND user_id != ($1)', values)
+          console.table(rows)
+          console.log(rows)
+          return rows
+        } else if (args.type === 'hold'){
+          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE hold_user_id != NULL AND user_id != ($1)', values)
+          console.table(rows)
+          console.log(rows)
+          return rows
+        } else
+          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id != NULL AND user_id != ($1)', values)
+          console.table(rows)
+          console.log(rows)
+          return rows
+
+      } catch (error) {
+        console.log(`WARNING: ${error}`)
+      } finally {
+        client.release()
+        console.log('Client has been successfully released!')
+      }
+    },
+
+
+    myEquipment: async (root, args, context) => {
+      const client = await pool.connect()
+
+      const values = [
+        context.currentUser.id,
+      ]
+
+      try {
+        if(args.type === 'available'){
+          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id = NULL AND hold_user_id = NULL AND user_id = ($1)', values)
+          console.table(rows)
+          console.log(rows)
+          return rows
+        } else if (args.type === 'hold'){
+          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE hold_user_id != NULL AND user_id = ($1)', values)
+          console.table(rows)
+          console.log(rows)
+          return rows
+        } else
+          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id != NULL AND user_id = ($1)', values)
+          console.table(rows)
+          console.log(rows)
+          return rows
+
+      } catch (error) {
+        console.log(`WARNING: ${error}`)
+      } finally {
+        client.release()
+        console.log('Client has been successfully released!')
+      }
+    },
+
+
+    myBorrowingHistory: async (root, args, context) => {
+      const client = await pool.connect()
+
+      const values = [
+        context.currentUser.id,
+      ]
+
+      try {
+        const { rows } = await client.query('SELECT e.category, e.weight, t.check_out_timestamp, t.check_in_timestamp, u.name, u.number FROM transactions as t INNER JOIN user_table as u ON t.lender_id = u.id INNER JOIN equipment as e ON t.equipment_id = e.id WHERE t.borrower_id = ($1)', values)
+        console.table(rows)
+        console.log(rows)
+        return rows
+
+      } catch (error) {
+        console.log(`WARNING: ${error}`)
+      } finally {
+        client.release()
+        console.log('Client has been successfully released!')
+      }
+    },
+
+
+    myLendingHistory: async (root, args, context) => {
+      const client = await pool.connect()
+
+      const values = [
+        context.currentUser.id,
+      ]
+
+      try {
+        const { rows } = await client.query('SELECT e.category, e.weight, t.check_out_timestamp, t.check_in_timestamp, u.name, u.number FROM transactions as t INNER JOIN user_table as u ON t.borrower_id = u.id INNER JOIN equipment as e ON t.equipment_id = e.id WHERE t.lender_id = ($1)', values)
+        console.table(rows)
+        console.log(rows)
+        return rows
+
+      } catch (error) {
+        console.log(`WARNING: ${error}`)
+      } finally {
+        client.release()
+        console.log('Client has been successfully released!')
+      }
+    },
+
+
+    myAccount: async (root, args, context) => {
+      const client = await pool.connect()
+
+      const values = [
+        context.currentUser.id,
+      ]
+
+      try {
+        const { rows } = await client.query('SELECT u.name, u.number, u.email, u.house, u.street, u.city FROM user_table AS u WHERE id = ($1)', values)
+        console.table(rows)
+        console.log(rows)
+        return rows
+
+      } catch (error) {
+        console.log(`WARNING: ${error}`)
+      } finally {
+        client.release()
+        console.log('Client has been successfully released!')
+      }
+    },
   },
 
 
