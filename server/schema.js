@@ -42,6 +42,14 @@ const typeDefs = gql`
     transaction_id: ID
     hold_user_id: ID
   }
+  type Views {
+    id: ID!
+    category: String!
+    weight: Int!
+    name: String!
+    number: String!
+    avatar: String
+  }
   type Transaction {
     id: ID!
     lender_id: ID!
@@ -49,6 +57,16 @@ const typeDefs = gql`
     equipment_id: ID!
     check_out_timestamp: String!
     check_in_timestamp: String
+  }
+  type History {
+    id: ID!
+    category: String!
+    weight: Int!
+    check_out_timestamp: String!
+    check_in_timestamp: String
+    name: String!
+    number: String!
+    avatar: String
   }
   type Token {
     value: String!
@@ -59,12 +77,12 @@ const typeDefs = gql`
     equipmentCount: Int!
     userCount: Int!
     allEquipment(user: String): [Equipment!]!
-    allOtherEquipment(type: String): [Equipment!]!
-    myEquipment(type: String): [Equipment!]!
+    allOtherEquipment(type: String): [Views!]!
+    myEquipment(type: String): [Views!]!
     allUsers: [User!]!
-    myBorrowingHistory: [Transaction!]!
-    myLendingHistory: [Transaction!]!
-    myAccount: User
+    myBorrowingHistory: [History!]!
+    myLendingHistory: [History!]!
+    myAccount: [User!]!
   }
 
   type Mutation {
@@ -190,28 +208,36 @@ const resolvers = {
 
 
     allOtherEquipment: async (root, args, context) => {
+      console.log("Queried for allOtherEquipment")
       const client = await pool.connect()
 
+      // Uncomment once testing of views has been complete
+      // const values = [
+      //   context.currentUser.id,
+      // ]
       const values = [
-        context.currentUser.id,
+        '9091b57448631e1e'
       ]
 
       try {
         if(args.type === 'available'){
-          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id = NULL AND hold_user_id = NULL AND user_id != ($1)', values)
+          console.log("Queried for available Equipment")
+          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id IS NULL AND hold_user_id IS NULL AND user_id != ($1)', values)
           console.table(rows)
           console.log(rows)
           return rows
         } else if (args.type === 'hold'){
-          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE hold_user_id != NULL AND user_id != ($1)', values)
+          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE hold_user_id IS NOT NULL AND user_id != ($1)', values)
+          console.table(rows)
+          console.log(rows)
+          return rows
+        } else if (args.type === 'checked out') {
+          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id IS NOT NULL AND user_id != ($1)', values)
           console.table(rows)
           console.log(rows)
           return rows
         } else
-          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id != NULL AND user_id != ($1)', values)
-          console.table(rows)
-          console.log(rows)
-          return rows
+          console.log("Failed to provide an argument")
 
       } catch (error) {
         console.log(`WARNING: ${error}`)
@@ -231,20 +257,22 @@ const resolvers = {
 
       try {
         if(args.type === 'available'){
-          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id = NULL AND hold_user_id = NULL AND user_id = ($1)', values)
+          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id IS NULL AND hold_user_id IS NULL AND user_id = ($1)', values)
           console.table(rows)
           console.log(rows)
           return rows
         } else if (args.type === 'hold'){
-          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE hold_user_id != NULL AND user_id = ($1)', values)
+          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE hold_user_id IS NOT NULL AND user_id = ($1)', values)
+          console.table(rows)
+          console.log(rows)
+          return rows
+        } else if (args.type === 'checked out') {
+          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id IS NOT NULL AND user_id = ($1)', values)
           console.table(rows)
           console.log(rows)
           return rows
         } else
-          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id != NULL AND user_id = ($1)', values)
-          console.table(rows)
-          console.log(rows)
-          return rows
+          console.log("Failed to provide an argument")
 
       } catch (error) {
         console.log(`WARNING: ${error}`)
@@ -263,7 +291,7 @@ const resolvers = {
       ]
 
       try {
-        const { rows } = await client.query('SELECT e.category, e.weight, t.check_out_timestamp, t.check_in_timestamp, u.name, u.number FROM transactions as t INNER JOIN user_table as u ON t.lender_id = u.id INNER JOIN equipment as e ON t.equipment_id = e.id WHERE t.borrower_id = ($1)', values)
+        const { rows } = await client.query('SELECT e.id, e.category, e.weight, t.check_out_timestamp, t.check_in_timestamp, u.name, u.number FROM transactions as t INNER JOIN user_table as u ON t.lender_id = u.id INNER JOIN equipment as e ON t.equipment_id = e.id WHERE t.borrower_id = ($1)', values)
         console.table(rows)
         console.log(rows)
         return rows
@@ -285,7 +313,7 @@ const resolvers = {
       ]
 
       try {
-        const { rows } = await client.query('SELECT e.category, e.weight, t.check_out_timestamp, t.check_in_timestamp, u.name, u.number FROM transactions as t INNER JOIN user_table as u ON t.borrower_id = u.id INNER JOIN equipment as e ON t.equipment_id = e.id WHERE t.lender_id = ($1)', values)
+        const { rows } = await client.query('SELECT e.id, e.category, e.weight, t.check_out_timestamp, t.check_in_timestamp, u.name, u.number FROM transactions as t INNER JOIN user_table as u ON t.borrower_id = u.id INNER JOIN equipment as e ON t.equipment_id = e.id WHERE t.lender_id = ($1)', values)
         console.table(rows)
         console.log(rows)
         return rows
@@ -431,7 +459,7 @@ const resolvers = {
       ]
       
       try {
-        const { rows } = await client.query('UPDATE equipment SET hold_user_id = NULL WHERE user_id = ($1) AND id = ($2) RETURNING *', values)
+        const { rows } = await client.query('UPDATE equipment SET hold_user_id IS NULL WHERE user_id = ($1) AND id = ($2) RETURNING *', values)
         console.table(rows)
         return rows[0]
 
@@ -473,7 +501,7 @@ const resolvers = {
         ]
 
         const result = await client.query('INSERT INTO transactions (id, borrower_id, lender_id, equipment_id, check_out_timestamp) VALUES ($1, $2, $3, $4, $5) RETURNING *', values)
-        const update = await client.query('UPDATE equipment SET transaction_id = ($1), hold_user_id = NULL WHERE id = ($2) RETURNING *', [result.rows[0].id, args.id])
+        const update = await client.query('UPDATE equipment SET transaction_id = ($1), hold_user_id IS NULL WHERE id = ($2) RETURNING *', [result.rows[0].id, args.id])
 
         console.table(result.rows)
         console.log(`CO: ${result.rows[0].check_out_timestamp}`)
@@ -516,7 +544,7 @@ const resolvers = {
         const { rows } = await client.query('UPDATE transactions SET check_in_timestamp = ($1) WHERE id = ($2) RETURNING *', values)
 
         // Clear the Transaction ID field
-        await client.query('UPDATE equipment SET transaction_id = NULL WHERE id = ($1)', [args.id])
+        await client.query('UPDATE equipment SET transaction_id IS NULL WHERE id = ($1)', [args.id])
 
         console.table(rows)
         return rows[0]
@@ -529,7 +557,7 @@ const resolvers = {
       }
     },
 
-    login: async (root, args, context) => {
+     login: async (root, args, context) => {
       const client = await pool.connect()
 
       try {
