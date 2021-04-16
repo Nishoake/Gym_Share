@@ -1,12 +1,14 @@
 import React from 'react'
+import Marketplace from './components/Marketplace'
 import './App.css'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
+    <div>
+      <header>
         Let's Go Pokémon!
       </header>
+      <Marketplace/>
     </div>
   )
 }
