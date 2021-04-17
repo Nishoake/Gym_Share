@@ -6,7 +6,7 @@ function App() {
   return (
     <div>
       <header>
-        Let's Go Pokémon!
+        Gym Share
       </header>
       <Marketplace/>
     </div>
