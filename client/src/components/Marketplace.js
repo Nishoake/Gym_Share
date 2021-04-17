@@ -1,30 +1,48 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { gql, useQuery } from '@apollo/client'
+import TableData from './TableData'
 
-const ALL_EQUIPMENT = gql`
-  query{
-    allEquipment{
+const ALL_OTHER_EQUIPMENT = gql`
+  query filterOtherEquipmentByType($type: String!){
+    allOtherEquipment(
+      type: $type
+    ) {
       id,
-      user_id,
       category,
       weight,
-      transaction_id,
-      hold_user_id
+      name,
+      number,
+      avatar
     }
   }
 `
 
 const Marketplace = () => {
-  const result = useQuery(ALL_EQUIPMENT)
+  const [available, setAvailable] = useState([])
 
-  if(result.loading)  {
+  const green = useQuery(ALL_OTHER_EQUIPMENT, { variables: { type: "available" } })
+
+  useEffect(() => {
+    if (green.data) {
+      setAvailable(green.data.allOtherEquipment)
+      console.log(`available: ${available}`)
+    }
+  }, [green.data]) // eslint-disable-line
+
+  if(green.loading)  {
     return <div>loading...</div>
+  } else if (green.error) {
+      console.log(`Error = ${green.error}`)
+      return <div>Error retrieving Book data</div>
   }
 
   return(
     <div>
-      {result.data.allEquipment.map(p => p.weight).join(', ')}
-      {/* {result.data} */}
+      <h1>
+        Marketplace
+      </h1>
+
+      <TableData label="Available Equipment" equipment={available} buttonLabel="Place Hold" />
     </div>
   )
 }
