@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const PLACE_HOLD = gql`
-  mutation{
+  mutation placeHold($id: String!){
     placeHold(
       id: $id
     ) {

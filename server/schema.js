@@ -420,16 +420,21 @@ const resolvers = {
 
     placeHold: async (root, args, context) => {
       // Check for authorization
-      if (!currentUser) {
-        throw new AuthenticationError("not authorized")
-      }
+      // if (!currentUser) {
+      //   console.log("not authorized")
+      //   throw new AuthenticationError("not authorized")
+      // }
 
       const client = await pool.connect()
 
       const values = [
-        context.currentUser.id,
+        '9091b57448631e1e',
         args.id
       ]
+      // const values = [
+      //   context.currentUser.id,
+      //   args.id
+      // ]
       
       try {
         

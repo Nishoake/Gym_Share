@@ -1,6 +1,11 @@
 import React from 'react'
 
 const TableData = ({ label, equipment, eventHandler, buttonLabel }) => {
+  // if(equipment[0]) {
+  //   console.log(`Equipment Array = ${JSON.stringify(equipment)}`)
+  //   console.log(`1st ID = ${equipment[1].id}`)
+  // }
+  
   return (
     <div>
       <h2>{label}</h2>

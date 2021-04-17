@@ -1,21 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { gql, useQuery } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import TableData from './TableData'
-
-const ALL_OTHER_EQUIPMENT = gql`
-  query filterOtherEquipmentByType($type: String!){
-    allOtherEquipment(
-      type: $type
-    ) {
-      id,
-      category,
-      weight,
-      name,
-      number,
-      avatar
-    }
-  }
-`
+import { ALL_OTHER_EQUIPMENT } from '../queries'
+import { PLACE_HOLD } from '../mutations'
 
 const Marketplace = () => {
 
@@ -28,6 +15,34 @@ const Marketplace = () => {
   const green = useQuery(ALL_OTHER_EQUIPMENT, { variables: { type: "available" } })
   const yellow = useQuery(ALL_OTHER_EQUIPMENT, { variables: { type: "hold" } })
   const red = useQuery(ALL_OTHER_EQUIPMENT, { variables: { type: "checked out" } })
+
+  // Defining useMutation Hook for placing holds
+  const [addHold] = useMutation(PLACE_HOLD, {
+    refetchQueries: [
+      {
+        query: ALL_OTHER_EQUIPMENT,
+        variables: { type: "available" }
+      },
+      {
+        query: ALL_OTHER_EQUIPMENT,
+        variables: { type: "hold" }
+      },
+    ]
+  })
+
+  // Defining event handler for placing a hold
+  // const placeHold = async (equipment) => {
+
+
+  //   console.log(`Placing a hold on equipment id: ${equipment}`)
+  // }
+  const placeHold = async (equipment) => {
+    await addHold({
+      variables: { id: equipment }
+    })
+
+    console.log(`Placing a hold on equipment id: ${equipment}`)
+  }
 
   // Available Equipment Hook
   useEffect(() => {
@@ -62,7 +77,7 @@ const Marketplace = () => {
         Marketplace
       </h1>
 
-      <TableData label="Available Equipment" equipment={available} buttonLabel="Place Hold" />
+      <TableData label="Available Equipment" equipment={available} eventHandler={placeHold} buttonLabel="Place Hold" />
       <TableData label="Equipment Placed on Hold" equipment={onHold} />
       <TableData label="Equipment Checked Out" equipment={checkedOut} />
     </div>
