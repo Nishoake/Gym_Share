@@ -4,7 +4,7 @@ import TableData from './TableData'
 import { ALL_OTHER_EQUIPMENT } from '../queries'
 import { PLACE_HOLD } from '../mutations'
 
-const Marketplace = () => {
+const Marketplace = ({ show }) => {
 
   // Application State
   const [available, setAvailable] = useState([])
@@ -30,12 +30,7 @@ const Marketplace = () => {
     ]
   })
 
-  // Defining event handler for placing a hold
-  // const placeHold = async (equipment) => {
-
-
-  //   console.log(`Placing a hold on equipment id: ${equipment}`)
-  // }
+  // Event handler we will render to call the mutation, addHold
   const placeHold = async (equipment) => {
     await addHold({
       variables: { id: equipment }
@@ -43,6 +38,7 @@ const Marketplace = () => {
 
     console.log(`Placing a hold on equipment id: ${equipment}`)
   }
+
 
   // Available Equipment Hook
   useEffect(() => {
@@ -65,7 +61,9 @@ const Marketplace = () => {
     }
   }, [red.data]) // eslint-disable-line
 
-  if (green.loading || yellow.loading || red.loading)  {
+  if (!show) {
+    return null
+  } else if (green.loading || yellow.loading || red.loading)  {
     return <div>loading...</div>
   } else if (green.error || yellow.error || red.error) {
       return <div>Error retrieving Book data</div>
