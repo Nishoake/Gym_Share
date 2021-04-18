@@ -1,20 +1,20 @@
 import React, { useState, useEffect }from 'react'
 import { useQuery } from '@apollo/client'
-import { MY_BORROWING_HISTORY } from '../queries'
+import { MY_LENDING_HISTORY } from '../queries'
 import TableHistory from './TableHistory'
 
-const BorrowingHistory = ({ show, token }) => {
+const LendingHistory = ({ show, token }) => {
 
   // Application State
   const [transactions, setTransactions] = useState([])
 
   // Defining the useQuery Hooks
-  const ledger = useQuery(MY_BORROWING_HISTORY)
+  const ledger = useQuery(MY_LENDING_HISTORY)
 
   // Transactions useEffect Hook
   useEffect(() => {
     if (ledger.data) {
-      setTransactions(ledger.data.myBorrowingHistory)
+      setTransactions(ledger.data.myLendingHistory)
     }
   }, [ledger.data]) // eslint-disable-line
 
@@ -23,18 +23,18 @@ const BorrowingHistory = ({ show, token }) => {
   } else if (ledger.loading) {
     return <div>loading...</div>
   } else if (ledger.error) {
-    return <div>Error retrieving Borrowing History data</div>
+    return <div>Error retrieving Lending History data</div>
   }
 
   return (
     <div>
       <h1>
-        My Borrowing History
+        My Lending History
       </h1>
 
-      <TableHistory transactions={transactions} columnLabel="Lender" />
+      <TableHistory transactions={transactions} columnLabel="Borrower" />
     </div>
   )
 }
 
-export default BorrowingHistory
+export default LendingHistory

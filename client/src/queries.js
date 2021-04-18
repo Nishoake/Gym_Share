@@ -44,3 +44,18 @@ export const MY_BORROWING_HISTORY = gql`
     }
   }
 `
+
+export const MY_LENDING_HISTORY = gql`
+  query{
+    myLendingHistory{
+      id,
+      category,
+      weight,
+      check_out_timestamp,
+      check_in_timestamp,
+      name,
+      number,
+      avatar
+    }
+  }
+`
