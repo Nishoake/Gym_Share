@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Marketplace from './components/Marketplace'
 import Equipment from './components/Equipment'
+import BorrowingHistory from './components/BorrowingHistory'
 import './App.css'
 
 function App() {
@@ -27,6 +28,11 @@ function App() {
       <Equipment
         show={page === 'equipment'}
       />
+
+      <BorrowingHistory
+        show={page === 'borrowingHistory'}
+      />
+      
     </div>
   )
 }

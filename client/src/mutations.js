@@ -13,3 +13,19 @@ export const PLACE_HOLD = gql`
     }
   }
 `
+
+export const ADD_EQUIPMENT = gql`
+  mutation addNewEquipment($category: String!, $weight: Int!){
+    addEquipment(
+      category: $category,
+      weight: $weight
+    ) {
+      category,
+      weight,
+      id,
+      user_id,
+      transaction_id,
+      hold_user_id
+    }
+  }
+`

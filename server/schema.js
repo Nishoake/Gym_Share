@@ -251,8 +251,12 @@ const resolvers = {
     myEquipment: async (root, args, context) => {
       const client = await pool.connect()
 
+      // Uncomment once testing of views has been complete
+      // const values = [
+      //   context.currentUser.id,
+      // ]
       const values = [
-        context.currentUser.id,
+        '9091b57448631e1e'
       ]
 
       try {
@@ -387,19 +391,26 @@ const resolvers = {
     },
 
     addEquipment: async (root, args, context) => {
-      // Check for authorization
-      if (!currentUser) {
-        throw new AuthenticationError("not authorized")
-      }
+      // // Check for authorization
+      // if (!currentUser) {
+      //   throw new AuthenticationError("not authorized")
+      // }
 
       const client = await pool.connect()
 
       // Generate an id
       const id = crypto.randomBytes(8).toString("hex")
 
+      // Uncomment once testing of views has been complete
+      // const values = [
+      //   id,
+      //   context.currentUser.id,
+      //   args.category,
+      //   args.weight,
+      // ]
       const values = [
         id,
-        context.currentUser.id,
+        '9091b57448631e1e',
         args.category,
         args.weight,
       ]
@@ -431,6 +442,8 @@ const resolvers = {
         '9091b57448631e1e',
         args.id
       ]
+
+      // Uncomment once testing of views has been complete
       // const values = [
       //   context.currentUser.id,
       //   args.id

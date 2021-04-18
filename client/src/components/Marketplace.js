@@ -66,7 +66,7 @@ const Marketplace = ({ show }) => {
   } else if (green.loading || yellow.loading || red.loading)  {
     return <div>loading...</div>
   } else if (green.error || yellow.error || red.error) {
-      return <div>Error retrieving Book data</div>
+      return <div>Error retrieving Marketplace data</div>
   }
 
   return(
