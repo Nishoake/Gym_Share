@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
-import TableData from './TableData'
+import TableHistory from './TableData'
 import { MY_EQUIPMENT } from '../queries'
 import { ADD_EQUIPMENT } from '../mutations'
 
@@ -80,9 +80,9 @@ const Equipment = ({ show }) => {
     <div>
       <h1>My Equipment</h1>
 
-      <TableData label="Available Equipment" equipment={available}/>
-      <TableData label="Equipment Placed on Hold" equipment={onHold} />
-      <TableData label="Equipment Checked Out" equipment={checkedOut} />
+      <TableHistory label="Available Equipment" equipment={available}/>
+      <TableHistory label="Equipment Placed on Hold" equipment={onHold} />
+      <TableHistory label="Equipment Checked Out" equipment={checkedOut} />
       <br/>
       <br/>
       <br/>

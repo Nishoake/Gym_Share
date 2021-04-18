@@ -1,14 +1,9 @@
 import React from 'react'
 
-const TableHistory = ({ label, equipment, eventHandler, buttonLabel }) => {
-  // if(equipment[0]) {
-  //   console.log(`Equipment Array = ${JSON.stringify(equipment)}`)
-  //   console.log(`1st ID = ${equipment[1].id}`)
-  // }
+const TableData = ({ transactions, columnLabel }) => {
   
   return (
     <div>
-      <h2>{label}</h2>
       <table>
         <tbody>
           <tr>
@@ -19,26 +14,26 @@ const TableHistory = ({ label, equipment, eventHandler, buttonLabel }) => {
               Weight
             </th>
             <th>
-              Owner
+              Checkout
             </th>
+            <th>
+              Checkin
+            </th>
+            <th>
+              {columnLabel}
+              </th>
             <th>
               Number
             </th>
-            <th>
-              Avatar {/* Might leave empty as it is self explanatory */}
-            </th>
-            <th>
-              {buttonLabel}
-            </th>
           </tr>
-          {equipment.map(e =>
+          {transactions.map(e =>
             <tr key={e.id}>
               <td>{e.category}</td>
               <td>{e.weight}</td>
+              <td>{e.check_out_timestamp}</td>
+              <td>{e.check_in_timestamp}</td>
               <td>{e.name}</td>
               <td>{e.number}</td>
-              <td>{e.avatar}</td>
-              <td><button onClick={() => eventHandler(e.id)}>{buttonLabel}</button></td>
             </tr>
           )}
         </tbody>
@@ -47,4 +42,4 @@ const TableHistory = ({ label, equipment, eventHandler, buttonLabel }) => {
   )
 }
 
-export default TableHistory
+export default TableData

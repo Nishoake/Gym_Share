@@ -29,3 +29,18 @@ export const MY_EQUIPMENT = gql`
     }
   }
 `
+
+export const MY_BORROWING_HISTORY = gql`
+  query{
+    myBorrowingHistory{
+      id,
+      category,
+      weight,
+      check_out_timestamp,
+      check_in_timestamp,
+      name,
+      number,
+      avatar
+    }
+  }
+`
