@@ -3,6 +3,7 @@ import Marketplace from './components/Marketplace'
 import Equipment from './components/Equipment'
 import BorrowingHistory from './components/BorrowingHistory'
 import LendingHistory from './components/LendingHistory'
+import Profile from './components/Profile'
 import './App.css'
 
 function App() {
@@ -36,6 +37,10 @@ function App() {
 
       <LendingHistory
         show={page === 'lendingHistory'}
+      />
+
+      <Profile
+        show={page === 'profile'}
       />
 
     </div>

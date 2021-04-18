@@ -342,8 +342,12 @@ const resolvers = {
     myAccount: async (root, args, context) => {
       const client = await pool.connect()
 
+      // Uncomment once testing of views has been complete
+      // const values = [
+      //   context.currentUser.id,
+      // ]
       const values = [
-        context.currentUser.id,
+        '9091b57448631e1e'
       ]
 
       try {

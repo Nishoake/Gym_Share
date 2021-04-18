@@ -59,3 +59,16 @@ export const MY_LENDING_HISTORY = gql`
     }
   }
 `
+
+export const MY_ACCOUNT = gql`
+  query{
+    myAccount{
+      name,
+      number,
+      email,
+      house,
+      street,
+      city
+    }
+  }
+`
