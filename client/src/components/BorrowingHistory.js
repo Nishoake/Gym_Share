@@ -2,11 +2,13 @@ import React, { useState, useEffect }from 'react'
 import { useQuery } from '@apollo/client'
 import { MY_BORROWING_HISTORY } from '../queries'
 import TableHistory from './TableHistory'
+import Select from 'react-select'
 
 const BorrowingHistory = ({ show, token }) => {
 
   // Application State
   const [transactions, setTransactions] = useState([])
+  const [selectedEquipment, setSelectedEquipment] = useState(null)
 
   // Defining the useQuery Hooks
   const ledger = useQuery(MY_BORROWING_HISTORY)

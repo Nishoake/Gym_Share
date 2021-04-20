@@ -80,9 +80,9 @@ const Equipment = ({ show }) => {
     <div>
       <h1>My Equipment</h1>
 
-      <TableHistory label="Available Equipment" equipment={available}/>
-      <TableHistory label="Equipment Placed on Hold" equipment={onHold} />
-      <TableHistory label="Equipment Checked Out" equipment={checkedOut} />
+      <TableHistory label="Available" equipment={available}/>
+      <TableHistory label="On Hold" equipment={onHold} />
+      <TableHistory label="Checked Out" equipment={checkedOut} />
       <br/>
       <br/>
       <br/>

@@ -30,12 +30,12 @@ const Profile = ({ show }) => {
     <div>
       <h1>My Account</h1>
 
-      <p>Name: {info[0].name}</p>
-      <p>Number: {info[0].number}</p>
-      <p>Email: {info[0].email}</p>
-      <p>House: {info[0].house}</p>
-      <p>Street: {info[0].street}</p>
-      <p>City: {info[0].city}</p>
+      <p><b>Name:</b> {info[0].name}</p>
+      <p><b>Number:</b> {info[0].number}</p>
+      <p><b>Email:</b> {info[0].email}</p>
+      <p><b>House:</b> {info[0].house}</p>
+      <p><b>Street:</b> {info[0].street}</p>
+      <p><b>City:</b> {info[0].city}</p>
 
     </div>
     
