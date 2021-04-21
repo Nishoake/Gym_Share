@@ -10,7 +10,7 @@ const BorrowingHistory = ({ show, token }) => {
   const [transactions, setTransactions] = useState([])
   const [weightQuery, setWeightQuery] = useState('')
   const [categoryQuery, setCategoryQuery] = useState('')
-  const [borrowerQuery, setBorrowerQuery] = useState('')
+  const [lenderQuery, setLenderQuery] = useState('')
   // const [selectedEquipment, setSelectedEquipment] = useState(null)
 
   // Defining the useQuery Hooks
@@ -23,34 +23,34 @@ const BorrowingHistory = ({ show, token }) => {
     }
   }, [ledger.data]) // eslint-disable-line
 
-  // Render filtered results of transactions array
-  const queryFilter = async () => {
-    // Filter transactions by weight
-    async function weightFilter(arrayToFilter) {
-      const weightFilteredTransactions = arrayToFilter.filter(t => t.weight.toUpperCase() === weightQuery.toUpperCase())
+  // // Render filtered results of transactions array
+  // const queryFilter = async () => {
+  //   // Filter transactions by weight
+  //   async function weightFilter(arrayToFilter) {
+  //     const weightFilteredTransactions = arrayToFilter.filter(t => t.weight.toUpperCase() === weightQuery.toUpperCase())
 
-      return weightFilteredTransactions
-    }
+  //     return weightFilteredTransactions
+  //   }
 
-    // Filter transactions by category
-    async function categoryFilter(arrayToFilter) {
-      const categoryFilteredTransactions = arrayToFilter.filter(t => t.category.toUpperCase() === categoryQuery.toUpperCase())
+  //   // Filter transactions by category
+  //   async function categoryFilter(arrayToFilter) {
+  //     const categoryFilteredTransactions = arrayToFilter.filter(t => t.category.toUpperCase() === categoryQuery.toUpperCase())
 
-      return categoryFilteredTransactions
-    }
+  //     return categoryFilteredTransactions
+  //   }
 
-    // Filter transactions by borrower
-    async function borrowerFilter(arrayToFilter) {
-      const borrowerFilteredTransactions = arrayToFilter.filter(t => t.name.toUpperCase() === borrowerQuery.toUpperCase())
+  //   // Filter transactions by lender
+  //   async function lenderFilter(arrayToFilter) {
+  //     const lenderFilteredTransactions = arrayToFilter.filter(t => t.name.toUpperCase() === lenderQuery.toUpperCase())
 
-      return borrowerFilteredTransactions
-    }
+  //     return lenderFilteredTransactions
+  //   }
 
-    if(weightQuery || categoryQuery || borrowerQuery){
-      return weightFilter(await categoryFilter(await borrowerFilter(transactions)))
-    } else
-      return transactions
-  }
+  //   if(weightQuery || categoryQuery || lenderQuery){
+  //     return weightFilter(await categoryFilter(await lenderFilter(transactions)))
+  //   } else
+  //     return transactions
+  // }
 
   // Controlled Component Functions
   const handleWeightQuery = (event) => {
@@ -63,9 +63,9 @@ const BorrowingHistory = ({ show, token }) => {
     setCategoryQuery(event.target.value)
   }
 
-  const handleBorrowerQuery = (event) => {
+  const handleLenderQuery = (event) => {
     console.log(event.target.value)
-    setBorrowerQuery(event.target.value)
+    setLenderQuery(event.target.value)
   }
 
   if (!show) {
@@ -76,13 +76,57 @@ const BorrowingHistory = ({ show, token }) => {
     return <div>Error retrieving Borrowing History data</div>
   }
 
+  // Creating a set of all the unique weight values
+  const weightSet = new Set()
+  ledger.data.myBorrowingHistory.map(t => weightSet.add(t.weight))
+  const uniqueWeights = [...weightSet]
+
+  // Event handler for all weights
+  const filterWeight = (weight) => {
+    const shortLedger = ledger.data.myBorrowingHistory.filter(t => t.weight === weight)
+
+    setTransactions(shortLedger)
+  }
+
+  // Creating a set of all the unique equipment category values
+  const categorySet = new Set()
+  ledger.data.myBorrowingHistory.map(t => categorySet.add(t.category))
+  const uniqueCategories = [...categorySet]
+
+  // Event handler for all categories
+  const filterCategory = (category) => {
+    const shortLedger = ledger.data.myBorrowingHistory.filter(t => t.category === category)
+
+    setTransactions(shortLedger)
+  }
+
+  // Creating a set of all the unique lenders
+  const lenderSet = new Set()
+  ledger.data.myBorrowingHistory.map(t => lenderSet.add(t.name))
+  const uniqueLenders = [...lenderSet]
+
+  // Event handler for all categories
+  const filterLender = (lender) => {
+    const shortLedger = ledger.data.myBorrowingHistory.filter(t => t.name === lender)
+
+    setTransactions(shortLedger)
+  }
+
+  // Respective reset event handler
+  const reset = () => {
+    setTransactions(ledger.data.myBorrowingHistory)
+  }
+
   return (
     <div>
       <h1>
         My Borrowing History
       </h1>
+      <h2>
+        Breakdown of Your Borrowing
+      </h2>
 
-      <Input
+      {/* <Input
         label="Filter by Weight"
         newInfo={weightQuery}
         handleInfoChange={handleWeightQuery}
@@ -93,16 +137,40 @@ const BorrowingHistory = ({ show, token }) => {
         handleInfoChange={handleCategoryQuery}
       />
       <Input
-        label="Filter by Borrower Name"
-        newInfo={weightQuery}
-        handleInfoChange={handleBorrowerQuery}
+        label="Filter by Lender Name"
+        newInfo={lenderQuery}
+        handleInfoChange={handleLenderQuery}
       />
       <button
-        onclick={() => console.log('button clicked')}
+        onClick={() => console.log('button clicked')}
       />
+      <br/> */}
+      <span><b>Weights: </b></span>
+      {uniqueWeights.map(weight =>
+        <button key={weight} type='button' onClick={() => filterWeight(weight)}>{weight} lb</button>
+      )}
+      <br/>
+      <span><b>Categories: </b></span>
+      {uniqueCategories.map(category =>
+        <button key={category} type='button' onClick={() => filterWeight(category)}>{category}</button>
+      )}
+      <br/>
+      <span><b>Lenders: </b></span>
+      {uniqueLenders.map(lender =>
+        <button key={lender} type='button' onClick={() => filterLender(lender)}>{lender}</button>
+      )}
+      <br/>
+      <br/>
+      <button type='button' onClick={() => reset()}>Reset Filters</button>
+
+      <br/>
+      <br/>
       <br/>
 
-      <TableHistory transactions={queryFilter} columnLabel="Lender" />
+      <h2>
+        Ledger of Transactions
+      </h2>
+      <TableHistory transactions={transactions} columnLabel="Lender" />
     </div>
   )
 }
