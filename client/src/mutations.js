@@ -29,3 +29,18 @@ export const ADD_EQUIPMENT = gql`
     }
   }
 `
+
+export const REMOVE_HOLD = gql`
+  mutation removeHold($id: String!){
+    removeHold(
+      id: $id
+    ) {
+      category,
+      weight,
+      id,
+      user_id
+      transaction_id,
+      hold_user_id
+    }
+  }
+`

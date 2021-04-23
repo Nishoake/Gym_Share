@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
 import TableHistory from './TableData'
 import { MY_EQUIPMENT } from '../queries'
-import { ADD_EQUIPMENT } from '../mutations'
+import { ADD_EQUIPMENT, REMOVE_HOLD } from '../mutations'
 
 const Equipment = ({ show }) => {
 
@@ -45,6 +45,29 @@ const Equipment = ({ show }) => {
 
     setCategory('')
     setWeight('')
+  }
+
+  // Defining useMutation Hook for removing a hold
+  const [cancelHold] = useMutation(REMOVE_HOLD, {
+    refetchQueries: [
+      {
+        query: MY_EQUIPMENT,
+        variables: { type: "available" }
+      },
+      {
+        query: MY_EQUIPMENT,
+        variables: { type: "hold" }
+      }
+    ]
+  })
+
+  // Event handler we will render to call the mutation, cancelHold
+  const holdRemove = async (event) => {
+    event.preventDefault()
+
+    await cancelHold()
+
+    console.log(`Removing a hold placed on equipment`)
   }
 
   // Available Equipment Hook
