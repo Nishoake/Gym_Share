@@ -1,0 +1,71 @@
+html {
+  margin: 0;
+  padding: env(safe-area-inset);
+  color: black;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f3f4f6;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+button {
+  color: black;
+  font-family: 'Montserrat', sans-serif;
+  border: 2px solid black;
+  border-radius: 5px;
+  border-color: #d6d8d9;
+  /* box-shadow: 3px 3px 7px #ededed, -3px -3px 7px #ffffff; */
+  background-color: #d6d8d9;
+  padding: 8px 25px;
+  transition-duration: 0.4s;
+}
+
+button:hover {
+  border-color: #fddcdf;
+  background-color: #fddcdf;
+  color: #f65a6f;
+}
+
+.container {
+  display: grid;
+  height: 100vh;
+  grid-template-columns: 0.8fr 1fr 1fr 1fr;
+  grid-template-rows: 0.2fr 3fr;
+  grid-template-areas: 
+    "sidebar topbar topbar topbar"
+    "sidebar main main main";
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  grid-area: sidebar;
+  background-color: #1d1d1d;
+  /* background-color: #282830; */
+  /* margin-top: -10px;
+  margin-left: -10px; */
+}
+
+.topbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  grid-area: topbar;
+  background-color: #d6d8d9;
+  color: white;
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  grid-area: main;
+  background-color: #fddcdf;
+}
