@@ -4,7 +4,7 @@ import TableHistory from './TableData'
 import { ALL_OTHER_EQUIPMENT } from '../queries'
 import { PLACE_HOLD } from '../mutations'
 
-const Marketplace = ({ show }) => {
+const Marketplace = () => {
 
   // Application State
   const [available, setAvailable] = useState([])
@@ -61,9 +61,7 @@ const Marketplace = ({ show }) => {
     }
   }, [red.data]) // eslint-disable-line
 
-  if (!show) {
-    return null
-  } else if (green.loading || yellow.loading || red.loading)  {
+  if (green.loading || yellow.loading || red.loading)  {
     return <div>loading...</div>
   } else if (green.error || yellow.error || red.error) {
       return <div>Error retrieving Marketplace data</div>

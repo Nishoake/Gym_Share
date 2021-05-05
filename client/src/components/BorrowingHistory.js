@@ -4,7 +4,7 @@ import { MY_BORROWING_HISTORY } from '../queries'
 import TableHistory from './TableHistory'
 import Input from './Input'
 
-const BorrowingHistory = ({ show, token }) => {
+const BorrowingHistory = () => {
 
   // Application State
   const [transactions, setTransactions] = useState([])
@@ -68,9 +68,7 @@ const BorrowingHistory = ({ show, token }) => {
     setLenderQuery(event.target.value)
   }
 
-  if (!show) {
-    return null
-  } else if (ledger.loading) {
+  if (ledger.loading) {
     return <div>loading...</div>
   } else if (ledger.error) {
     return <div>Error retrieving Borrowing History data</div>

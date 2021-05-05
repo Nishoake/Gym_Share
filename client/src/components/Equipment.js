@@ -4,7 +4,7 @@ import TableHistory from './TableData'
 import { MY_EQUIPMENT } from '../queries'
 import { ADD_EQUIPMENT, REMOVE_HOLD } from '../mutations'
 
-const Equipment = ({ show }) => {
+const Equipment = () => {
 
   // Application State
   // Table State
@@ -91,9 +91,7 @@ const Equipment = ({ show }) => {
     }
   }, [red.data]) // eslint-disable-line
 
-  if (!show) {
-    return null
-  } else if (green.loading || yellow.loading || red.loading) {
+  if (green.loading || yellow.loading || red.loading) {
     return <div>loading...</div>
   } else if (green.error || yellow.error || red.error) {
     return <div>Error retrieving Marketplace data</div>

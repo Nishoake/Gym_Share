@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client'
 import { MY_LENDING_HISTORY } from '../queries'
 import TableHistory from './TableHistory'
 
-const LendingHistory = ({ show, token }) => {
+const LendingHistory = () => {
 
   // Application State
   const [transactions, setTransactions] = useState([])
@@ -18,9 +18,7 @@ const LendingHistory = ({ show, token }) => {
     }
   }, [ledger.data]) // eslint-disable-line
 
-  if (!show) {
-    return null
-  } else if (ledger.loading) {
+  if (ledger.loading) {
     return <div>loading...</div>
   } else if (ledger.error) {
     return <div>Error retrieving Lending History data</div>
