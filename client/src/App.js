@@ -18,25 +18,25 @@ import Profile from './components/Profile'
 import './App.css'
 
 function App() {
-  const [page, setPage] = useState('marketPlace')
-  
+
   return (
     <div className="container">
 
       <Router>
         <div className="sidebar">
-          <Link to="/">Marketplace</Link>
-          <Link to="/equipment">My Equipment</Link>
-          <Link to="/borrowingHistory">Borrowing History</Link>
-          <Link to="/lendingHistory">Lending History</Link>
-          <Link to="/profile">Profile</Link>
+          <h1 className="logo">GYM SHARE</h1>
+          <Link to="/" className="link nav-select">Marketplace</Link>
+          <Link to="/equipment" className="link nav-select">My Equipment</Link>
+          <Link to="/borrowingHistory" className="link nav-select">Borrowing History</Link>
+          <Link to="/lendingHistory" className="link nav-select">Lending History</Link>
+          <Link to="/profile" className="link nav-select">Profile</Link>
         </div>
 
-        <div className="topbar">
+        {/* <div className="topbar">
           <header>
             Gym Share
           </header>
-        </div>
+        </div> */}
         <div className="main">
           <Switch>
             <Route exact={true} path="/">
