@@ -5,6 +5,8 @@
   font-size: 16px;
   font-family: 'Alata', sans-serif;
   background-color: #f3f4f6;
+  --gap: 14rem;
+  --pad-left: 25px;
   --text-primary: #cdc8c8;
   --text-secondary: #ffffff;
   --hover-color: #CA3433;
@@ -18,6 +20,7 @@ body {
   padding: 0;
 }
 
+/* Scrollbar styling */
 body::-webkit-scrollbar {
   width: 0.25rem;
 }
@@ -30,6 +33,8 @@ body::-webkit-scrollbar-thumb {
   background: var(--button-hover);
 }
 
+
+/* Button styling */
 button {
   color: black;
   font-family: 'Alata', sans-serif;
@@ -48,13 +53,14 @@ button:hover {
   color: var(--button-hover);
 }
 
+
+/* Arrangement rules for desktop views */
 .container {
   display: grid;
   height: 100vh;
   grid-template-columns: 0.8fr 1fr 1fr 1fr;
-  grid-template-rows: 0.2fr 3fr;
-  grid-template-areas: 
-    "sidebar topbar topbar topbar"
+  grid-template-rows: 1fr;
+  grid-template-areas:
     "sidebar main main main";
 }
 
@@ -67,11 +73,12 @@ button:hover {
   background-color: var(--sidebar-color);
   box-shadow: -10px 0px 10px 1px #aaaaaa;
   height: 100%;
-  width: 20%;
+  width: var(--gap);
   z-index: 1;
   top: 0; /* Stay at the top */
   left: 0;
-  position: fixed; 
+  position: fixed;
+  /* visibility: hidden;  */
   /* background-color: #282830; */
   /* margin-top: -10px;
   margin-left: -10px; */
@@ -88,16 +95,23 @@ button:hover {
 }
 
 .main {
+  margin-left: var(--gap);
+  padding: 1rem;
+}
+
+/* .main {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
   grid-area: main;
   background-color: #fddcdf;
-  /* background-color: #191e28; */
+  background-color: #191e28;
   padding-left: 20px;
-}
+} */
 
+
+/* Navbar styling */
 a {
   text-decoration: none;
 }
@@ -115,8 +129,8 @@ a:visited {
 .link {
   padding-top: 20px;
   padding-bottom: 20px;
-  padding-left: 25px;
-  width: 100%;
+  padding-left: var(--pad-left);
+  width: calc(var(--gap) - var(--pad-left));
 }
 
 .nav-select {
