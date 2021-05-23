@@ -5,11 +5,29 @@
   font-size: 16px;
   font-family: 'Alata', sans-serif;
   background-color: #f3f4f6;
+  --text-primary: #cdc8c8;
+  --text-secondary: #ffffff;
+  --hover-color: #CA3433;
+  --sidebar-color: #B22222;
+  --button-color: #fddcdf;
+  --button-hover: #f65a6f;
 }
 
 body {
   margin: 0;
   padding: 0;
+}
+
+body::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--text-primary);
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--button-hover);
 }
 
 button {
@@ -25,9 +43,9 @@ button {
 }
 
 button:hover {
-  border-color: #fddcdf;
-  background-color: #fddcdf;
-  color: #f65a6f;
+  border-color: var(--button-color);
+  background-color: var(--button-color);
+  color: var(--button-hover);
 }
 
 .container {
@@ -46,7 +64,7 @@ button:hover {
   justify-content: flex-start;
   align-items: flex-start;
   grid-area: sidebar;
-  background-color: #ed667b;
+  background-color: var(--sidebar-color);
   box-shadow: -10px 0px 10px 1px #aaaaaa;
   height: 100%;
   width: 20%;
@@ -85,12 +103,12 @@ a {
 }
 
 a:visited {
-  color: #9f091f;
+  color: var(--text-primary);
 }
 
 .logo {
   font-family: 'Graduate', cursive;
-  color: black;
+  color: var(--text-secondary);
   margin-left: 15px;
 }
 
@@ -105,11 +123,12 @@ a:visited {
   display: flexbox;
   justify-content: flex-start;
   align-items: center;
-  transition: 200ms ease;
+  transition: 150ms ease;
 }
 
 .nav-select:hover {
-  background-color: rgb(40, 40, 40);
+  background-color: var(--hover-color);
+  color: var(--text-secondary);
 }
 
 .sidebar:last-child {
