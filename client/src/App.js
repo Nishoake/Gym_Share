@@ -25,12 +25,13 @@ function App() {
 
       <Router>
         <div className="sidebar">
-          <h1 className="logo">GYM SHARE</h1>
-          <Link to="/" className="link nav-select">Marketplace</Link>
+          <Link to="/"><h1 className="logo">GYM SHARE</h1></Link>
+          <Link to="/marketplace" className="link nav-select">Marketplace</Link>
           <Link to="/equipment" className="link nav-select">My Equipment</Link>
           <Link to="/borrowingHistory" className="link nav-select">Borrowing History</Link>
           <Link to="/lendingHistory" className="link nav-select">Lending History</Link>
-          <Link to="/profile" className="link nav-select">Profile</Link>
+          {/* <Link to="/profile" className="link nav-select">Profile</Link> */}
+          <button>Logout</button>
         </div>
 
         {/* <div className="topbar">
@@ -41,6 +42,9 @@ function App() {
         <div className="main">
           <Switch>
             <Route exact={true} path="/">
+              <Profile />
+            </Route>
+            <Route exact={true} path="/marketplace">
               <Marketplace />
             </Route>
             <Route path="/equipment">
@@ -51,9 +55,6 @@ function App() {
             </Route>
             <Route path="/lendingHistory">
               <LendingHistory />
-            </Route>
-            <Route path="/profile">
-              <Profile />
             </Route>
           </Switch>
         </div>

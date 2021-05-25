@@ -30,7 +30,7 @@ body::-webkit-scrollbar-track {
 }
 
 body::-webkit-scrollbar-thumb {
-  background: var(--button-hover);
+  background: var(--hover-color);
 }
 
 
@@ -55,13 +55,18 @@ button:hover {
 
 
 /* Arrangement rules for desktop views */
-.container {
+/* .container {
   display: grid;
   height: 100vh;
   grid-template-columns: 0.8fr 1fr 1fr 1fr;
   grid-template-rows: 1fr;
   grid-template-areas:
     "sidebar main main main";
+} */
+
+.main {
+  margin-left: var(--gap);
+  padding: 1rem;
 }
 
 .sidebar {
@@ -84,20 +89,6 @@ button:hover {
   margin-left: -10px; */
 }
 
-.topbar {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  grid-area: topbar;
-  background-color: #d6d8d9;
-  color: white;
-}
-
-.main {
-  margin-left: var(--gap);
-  padding: 1rem;
-}
 
 /* .main {
   display: flex;
@@ -114,6 +105,7 @@ button:hover {
 /* Navbar styling */
 a {
   text-decoration: none;
+  color: var(--text-primary);
 }
 
 a:visited {
@@ -145,6 +137,17 @@ a:visited {
   color: var(--text-secondary);
 }
 
-.sidebar:last-child {
-  margin-top: auto;
+/* .sidebar:last-child {
+  color: blue;
+} */
+
+/* Link:last-child {
+  text-decoration: underline;
+} */
+
+button:last-child {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
