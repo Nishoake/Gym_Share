@@ -4,7 +4,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
+  NavLink,
   Redirect,
   useParams,
   useHistory,
@@ -25,13 +25,25 @@ function App() {
 
       <Router>
         <div className="sidebar">
-          <Link to="/"><h1 className="logo">GYM SHARE</h1></Link>
-          <Link to="/marketplace" className="link nav-select">Marketplace</Link>
-          <Link to="/equipment" className="link nav-select">My Equipment</Link>
-          <Link to="/borrowingHistory" className="link nav-select">Borrowing History</Link>
-          <Link to="/lendingHistory" className="link nav-select">Lending History</Link>
+          <NavLink to="/"><h1 className="logo">GYM SHARE</h1></NavLink>
+          <NavLink to="/marketplace" className="link nav-select" activeStyle={{
+            fontWeight: "bold",
+            color: "white"
+          }}>Marketplace</NavLink>
+          <NavLink to="/equipment" className="link nav-select" activeStyle={{
+            fontWeight: "bold",
+            color: "white"
+          }}>My Equipment</NavLink>
+          <NavLink to="/borrowingHistory" className="link nav-select" activeStyle={{
+            fontWeight: "bold",
+            color: "white"
+          }}>Borrowing History</NavLink>
+          <NavLink to="/lendingHistory" className="link nav-select" activeStyle={{
+            fontWeight: "bold",
+            color: "white"
+          }}>Lending History</NavLink>
           {/* <Link to="/profile" className="link nav-select">Profile</Link> */}
-          <button>Logout</button>
+          <button className="logout-button">Logout</button>
         </div>
 
         {/* <div className="topbar">
@@ -47,13 +59,13 @@ function App() {
             <Route exact={true} path="/marketplace">
               <Marketplace />
             </Route>
-            <Route path="/equipment">
+            <Route exact={true} path="/equipment">
               <Equipment />
             </Route>
-            <Route path="/borrowingHistory">
+            <Route exact={true} path="/borrowingHistory">
               <BorrowingHistory />
             </Route>
-            <Route path="/lendingHistory">
+            <Route exact={true} path="/lendingHistory">
               <LendingHistory />
             </Route>
           </Switch>
