@@ -33,6 +33,7 @@ const typeDefs = gql`
     street: String!
     city: String!
     is_validated: Boolean!
+    avatar_url: String!
   }
   type Equipment {
     id: ID!
@@ -48,7 +49,7 @@ const typeDefs = gql`
     weight: Int!
     name: String!
     number: String!
-    avatar: String
+    avatar_url: String
   }
   type Transaction {
     id: ID!
@@ -66,7 +67,7 @@ const typeDefs = gql`
     check_in_timestamp: String
     name: String!
     number: String!
-    avatar: String
+    avatar_url: String
   }
   type Token {
     value: String!
@@ -222,17 +223,17 @@ const resolvers = {
       try {
         if(args.type === 'available'){
           console.log("Queried for available Equipment")
-          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id IS NULL AND hold_user_id IS NULL AND user_id != ($1)', values)
+          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number, u.avatar_url FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id IS NULL AND hold_user_id IS NULL AND user_id != ($1)', values)
           console.table(rows)
           console.log(rows)
           return rows
         } else if (args.type === 'hold'){
-          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE hold_user_id IS NOT NULL AND user_id != ($1)', values)
+          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number, u.avatar_url FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE hold_user_id IS NOT NULL AND user_id != ($1)', values)
           console.table(rows)
           console.log(rows)
           return rows
         } else if (args.type === 'checked out') {
-          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id IS NOT NULL AND user_id != ($1)', values)
+          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number, u.avatar_url FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id IS NOT NULL AND user_id != ($1)', values)
           console.table(rows)
           console.log(rows)
           return rows
@@ -299,7 +300,7 @@ const resolvers = {
       ]
 
       try {
-        const { rows } = await client.query('SELECT e.id, e.category, e.weight, t.check_out_timestamp, t.check_in_timestamp, u.name, u.number FROM transactions as t INNER JOIN user_table as u ON t.lender_id = u.id INNER JOIN equipment as e ON t.equipment_id = e.id WHERE t.borrower_id = ($1)', values)
+        const { rows } = await client.query('SELECT e.id, e.category, e.weight, t.check_out_timestamp, t.check_in_timestamp, u.name, u.number, u.avatar_url FROM transactions as t INNER JOIN user_table as u ON t.lender_id = u.id INNER JOIN equipment as e ON t.equipment_id = e.id WHERE t.borrower_id = ($1)', values)
         console.table(rows)
         console.log(rows)
         return rows
@@ -325,7 +326,7 @@ const resolvers = {
       ]
 
       try {
-        const { rows } = await client.query('SELECT e.id, e.category, e.weight, t.check_out_timestamp, t.check_in_timestamp, u.name, u.number FROM transactions as t INNER JOIN user_table as u ON t.borrower_id = u.id INNER JOIN equipment as e ON t.equipment_id = e.id WHERE t.lender_id = ($1)', values)
+        const { rows } = await client.query('SELECT e.id, e.category, e.weight, t.check_out_timestamp, t.check_in_timestamp, u.name, u.number, u.avatar_url FROM transactions as t INNER JOIN user_table as u ON t.borrower_id = u.id INNER JOIN equipment as e ON t.equipment_id = e.id WHERE t.lender_id = ($1)', values)
         console.table(rows)
         console.log(rows)
         return rows
@@ -351,7 +352,7 @@ const resolvers = {
       ]
 
       try {
-        const { rows } = await client.query('SELECT u.name, u.number, u.email, u.house, u.street, u.city FROM user_table AS u WHERE id = ($1)', values)
+        const { rows } = await client.query('SELECT u.name, u.number, u.email, u.house, u.street, u.city, u.avatar_url FROM user_table AS u WHERE id = ($1)', values)
         console.table(rows)
         console.log(rows)
         return rows

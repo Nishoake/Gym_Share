@@ -10,7 +10,7 @@ export const ALL_OTHER_EQUIPMENT = gql`
       weight,
       name,
       number,
-      avatar
+      avatar_url
     }
   }
 `
@@ -25,7 +25,7 @@ export const MY_EQUIPMENT = gql`
       weight,
       name,
       number,
-      avatar
+      avatar_url
     }
   }
 `
@@ -40,7 +40,7 @@ export const MY_BORROWING_HISTORY = gql`
       check_in_timestamp,
       name,
       number,
-      avatar
+      avatar_url
     }
   }
 `
@@ -55,7 +55,7 @@ export const MY_LENDING_HISTORY = gql`
       check_in_timestamp,
       name,
       number,
-      avatar
+      avatar_url
     }
   }
 `
@@ -68,7 +68,8 @@ export const MY_ACCOUNT = gql`
       email,
       house,
       street,
-      city
+      city,
+      avatar_url
     }
   }
 `

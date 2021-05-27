@@ -21,7 +21,7 @@ const Profile = () => {
   if (account.loading) {
     return <div>loading...</div>
   } else if (account.error) {
-    return <div>Error retrieving Marketplace data</div>
+    return <div>Error retrieving Dashboard data</div>
   }
 
   return(
