@@ -67,8 +67,9 @@ const server = new ApolloServer({
 server.applyMiddleware({ app });
 
 // Setting up the Client
-app.use((req, res) => {
-  res.status(200);
-  res.send('Train in Saiyan 👱‍♀️');
-  res.end();
-})
+// app.use((req, res) => {
+//   res.status(200);
+//   res.send('Train in Saiyan 👱‍♀️');
+//   res.end();
+// })
+app.use(express.static('build'))
