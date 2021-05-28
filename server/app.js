@@ -49,7 +49,7 @@ const server = new ApolloServer({
         // This is portion is expendable
         const { rows } = await client.query('SELECT * from user_table WHERE id = ($1)', [decodedToken.id])
         const currentUser = rows[0]
-        // console.log(`CurrentUser = ${currentUser}`)
+        
         return { currentUser }
       }
     } catch (error) {
@@ -67,9 +67,4 @@ const server = new ApolloServer({
 server.applyMiddleware({ app });
 
 // Setting up the Client
-// app.use((req, res) => {
-//   res.status(200);
-//   res.send('Train in Saiyan 👱‍♀️');
-//   res.end();
-// })
 app.use(express.static('build'))
