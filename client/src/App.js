@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 // Importing React-Router
 import {
   BrowserRouter as Router,
+  HashRouter,
   Switch,
   Route,
   NavLink,
@@ -23,7 +24,8 @@ function App() {
     <div>
     {/* <div className="container"> */}
 
-      <Router>
+      <HashRouter>
+      {/* <Router> */}
         <div className="sidebar">
           <NavLink to="/"><h1 className="logo">GYM SHARE</h1></NavLink>
           <NavLink to="/marketplace" className="link nav-select" activeStyle={{
@@ -71,7 +73,8 @@ function App() {
           </Switch>
         </div>
         
-      </Router>
+      {/* </Router> */}
+      </HashRouter>
         {/* <button onClick={() => setPage('marketPlace')}>Marketplace</button>
         <button onClick={() => setPage('equipment')}>My Equipment</button>
         <button onClick={() => setPage('borrowingHistory')}>Borrowing History</button>
