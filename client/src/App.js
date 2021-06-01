@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
 // Importing React-Router
 import {
-  BrowserRouter as Router,
+  // BrowserRouter as Router,
   HashRouter,
   Switch,
   Route,
-  NavLink,
-  Redirect,
-  useParams,
-  useHistory,
+  NavLink
 } from "react-router-dom"
 
 import Marketplace from './components/Marketplace'
@@ -25,27 +22,26 @@ function App() {
     {/* <div className="container"> */}
 
       <HashRouter>
-      {/* <Router> */}
         <div className="sidebar">
           <NavLink to="/"><h1 className="logo">GYM SHARE</h1></NavLink>
           <NavLink to="/marketplace" className="link nav-select" activeStyle={{
             fontWeight: "bold",
             color: "white"
-          }}>Marketplace</NavLink>
+          }}><i className="fas fa-store icon-spacing"/>Marketplace</NavLink>
           <NavLink to="/equipment" className="link nav-select" activeStyle={{
             fontWeight: "bold",
             color: "white"
-          }}>My Equipment</NavLink>
+          }}><i class="fas fa-dumbbell icon-spacing"/>My Equipment</NavLink>
           <NavLink to="/borrowingHistory" className="link nav-select" activeStyle={{
             fontWeight: "bold",
             color: "white"
-          }}>Borrowing History</NavLink>
+          }}><i class="fas fa-arrow-left icon-spacing"/>Borrowing History</NavLink>
           <NavLink to="/lendingHistory" className="link nav-select" activeStyle={{
             fontWeight: "bold",
             color: "white"
-          }}>Lending History</NavLink>
+          }}><i class="fas fa-arrow-right icon-spacing" />Lending History</NavLink>
           {/* <Link to="/profile" className="link nav-select">Profile</Link> */}
-          <button className="logout-button">Logout</button>
+          <button className="logout-button"><i class="fas fa-sign-out-alt icon-spacing"/>Logout</button>
         </div>
 
         {/* <div className="topbar">
@@ -73,7 +69,6 @@ function App() {
           </Switch>
         </div>
         
-      {/* </Router> */}
       </HashRouter>
         {/* <button onClick={() => setPage('marketPlace')}>Marketplace</button>
         <button onClick={() => setPage('equipment')}>My Equipment</button>

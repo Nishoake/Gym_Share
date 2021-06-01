@@ -33,6 +33,18 @@ body::-webkit-scrollbar-thumb {
   background: var(--hover-color);
 }
 
+/* Card Styling */
+.card {
+  background-color: white;
+  padding: 60px 20px 50px 20px;
+  border-radius: 10px;
+  box-shadow: rgba(59, 59, 59, 0.05) 0px 5px 15px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-self: flex-start;
+  align-items: flex-start;
+  /* z-index: -1; */
+}
 
 /* Button styling */
 button {
@@ -166,4 +178,8 @@ a:visited {
   width: 48px;
   height: 48px;
   border-radius: 50%;
+}
+
+.icon-spacing {
+  margin-right: 1rem;
 }
