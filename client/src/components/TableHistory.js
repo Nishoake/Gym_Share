@@ -3,7 +3,7 @@ import React from 'react'
 const TableData = ({ transactions, columnLabel }) => {
   
   return (
-    <div>
+    <div className="card">
       <table>
         <tbody>
           <tr>

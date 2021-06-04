@@ -99,7 +99,7 @@ const Equipment = () => {
 
   return(
     <div>
-      <h1>My Equipment</h1>
+      <h1 className="view-header">My Equipment</h1>
 
       <TableHistory label="Available" equipment={available}/>
       <TableHistory label="On Hold" equipment={onHold} />

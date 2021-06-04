@@ -117,10 +117,10 @@ const BorrowingHistory = () => {
 
   return (
     <div>
-      <h1>
+      <h1 className="view-header">
         My Borrowing History
       </h1>
-      <h2>
+      <h2 className="view-header">
         Breakdown of Your Borrowing
       </h2>
 
@@ -165,7 +165,7 @@ const BorrowingHistory = () => {
       <br/>
       <br/>
 
-      <h2>
+      <h2 className="view-header">
         Ledger of Transactions
       </h2>
       <TableHistory transactions={transactions} columnLabel="Lender" />

@@ -13,6 +13,7 @@
   --sidebar-color: #B22222;
   --button-color: #fddcdf;
   --button-hover: #f65a6f;
+  --card-margin: 20px;
 }
 
 body {
@@ -36,7 +37,8 @@ body::-webkit-scrollbar-thumb {
 /* Card Styling */
 .card {
   background-color: white;
-  padding: 60px 20px 50px 20px;
+  padding: 20px 20px 50px 20px;
+  margin: var(--card-margin);
   border-radius: 10px;
   box-shadow: rgba(59, 59, 59, 0.05) 0px 5px 15px 0px;
   display: flex;
@@ -182,4 +184,8 @@ a:visited {
 
 .icon-spacing {
   margin-right: 1rem;
+}
+
+.view-header {
+  margin-left: var(--card-margin);
 }

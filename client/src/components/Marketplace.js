@@ -69,7 +69,7 @@ const Marketplace = () => {
 
   return(
     <div>
-      <h1>
+      <h1 className="view-header">
         Marketplace
       </h1>
 

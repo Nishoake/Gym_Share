@@ -26,7 +26,7 @@ const LendingHistory = () => {
 
   return (
     <div>
-      <h1>
+      <h1 className="view-header">
         My Lending History
       </h1>
 

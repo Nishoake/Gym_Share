@@ -7,7 +7,7 @@ const TableHistory = ({ label, equipment, eventHandler, buttonLabel }) => {
   // }
   
   return (
-    <div>
+    <div className="card">
       <h2>{label}</h2>
       <table>
         <tbody>
