@@ -15,6 +15,10 @@ import LendingHistory from './components/LendingHistory'
 import Profile from './components/Profile'
 import './App.css'
 
+// Defining constants
+const profilePictureURL = 'https://cdn2.bulbagarden.net/upload/7/75/VSBrock_Masters.png'
+const userName = 'Brock'
+
 function App() {
 
   return (
@@ -23,7 +27,13 @@ function App() {
 
       <HashRouter>
         <div className="sidebar">
-          <NavLink to="/"><h1 className="logo">GYM SHARE</h1></NavLink>
+          <NavLink to="/">
+            <h1 className="logo">GYM SHARE</h1>
+            <div className='welcome'>
+              <img src={profilePictureURL} alt="Profile Picture" className="avatar" />
+              Welcome {userName}!
+            </div>
+          </NavLink>
           <NavLink to="/marketplace" className="link nav-select" activeStyle={{
             fontWeight: "bold",
             color: "white"
@@ -40,8 +50,9 @@ function App() {
             fontWeight: "bold",
             color: "white"
           }}><i class="fas fa-arrow-right icon-spacing" />Lending History</NavLink>
-          {/* <Link to="/profile" className="link nav-select">Profile</Link> */}
-          <button className="logout-button"><i class="fas fa-sign-out-alt icon-spacing"/>Logout</button>
+          {/* Disabled logout button for demo purposes */}
+          {/* <button className="logout-button" disabled><i class="fas fa-sign-out-alt icon-spacing"/>Logout</button> */}
+
         </div>
 
         {/* <div className="topbar">

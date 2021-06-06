@@ -74,8 +74,8 @@ const Marketplace = () => {
       </h1>
 
       <TableHistory label="Available Equipment" equipment={available} eventHandler={placeHold} buttonLabel="Place Hold" />
-      <TableHistory label="Equipment Placed on Hold" equipment={onHold} />
-      <TableHistory label="Equipment Checked Out" equipment={checkedOut} />
+      {/* <TableHistory label="Equipment Placed on Hold" equipment={onHold} /> */}
+      {/* <TableHistory label="Equipment Checked Out" equipment={checkedOut} /> */}
     </div>
   )
 }

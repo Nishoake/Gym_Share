@@ -3,6 +3,7 @@ import { useQuery, useMutation } from '@apollo/client'
 import TableHistory from './TableData'
 import { MY_EQUIPMENT } from '../queries'
 import { ADD_EQUIPMENT, REMOVE_HOLD } from '../mutations'
+import Select from 'react-select'
 
 const Equipment = () => {
 
@@ -91,6 +92,102 @@ const Equipment = () => {
     }
   }, [red.data]) // eslint-disable-line
 
+  // React-Select options
+  // Will move to a config file
+  const categoryOptions = [
+    {
+      value: 'Dumbbell',
+      label: 'Dumbbell'
+    },
+    {
+      value: 'Kettlebell',
+      label: 'Kettlebell'
+    }
+  ]
+
+  const weightOptions = [
+    {
+      value: 5,
+      label: '5'
+    },
+    {
+      value: 10,
+      label: '10'
+    },
+    {
+      value: 15,
+      label: '15'
+    },
+    {
+      value: 20,
+      label: '20'
+    },
+    {
+      value: 25,
+      label: '25'
+    },
+    {
+      value: 30,
+      label: '30'
+    },
+    {
+      value: 35,
+      label: '35'
+    },
+    {
+      value: 40,
+      label: '40'
+    },
+    {
+      value: 45,
+      label: '45'
+    },
+    {
+      value: 50,
+      label: '50'
+    },
+    {
+      value: 55,
+      label: '55'
+    },
+    {
+      value: 60,
+      label: '60'
+    },
+    {
+      value: 65,
+      label: '65'
+    },
+    {
+      value: 70,
+      label: '70'
+    },
+    {
+      value: 75,
+      label: '75'
+    },
+    {
+      value: 80,
+      label: '80'
+    },
+    {
+      value: 85,
+      label: '85'
+    },
+    {
+      value: 90,
+      label: '90'
+    },
+    {
+      value: 95,
+      label: '95'
+    },
+    {
+      value: 100,
+      label: '100'
+    },
+  ]
+
   if (green.loading || yellow.loading || red.loading) {
     return <div>loading...</div>
   } else if (green.error || yellow.error || red.error) {
@@ -104,31 +201,32 @@ const Equipment = () => {
       <TableHistory label="Available" equipment={available}/>
       <TableHistory label="On Hold" equipment={onHold} />
       <TableHistory label="Checked Out" equipment={checkedOut} />
-      <br/>
-      <br/>
-      <br/>
-      {/* Will add form validation after and add CSS styles, specifically the margin to get rid of the br elements*/}
-      <form onSubmit={newEquipment}>
-        <div>
-          Category
-          <input
-            value={category}
-            onChange={({ target }) => setCategory(target.value)}
-          />
-        </div>
-        <div>
-          Weight
-          <input
-            value={weight}
-            onChange={({ target }) => setWeight(target.value)}
-          />
-        </div>
-        <button type='submit'>Add Equipment</button>
-      </form>
-    </div>
-    
 
-    
+      {/* Will add form validation after and add CSS styles, specifically the margin to get rid of the br elements*/}
+      <div className="view-header">
+        <form onSubmit={newEquipment}>
+          <div>
+            Category:
+            <Select
+              defaultValue={{ label: 'Dumbbell', value: 'Dumbbell' }}
+              onChange={setCategory}
+              options={categoryOptions}
+              className='input-add-equip'
+            />
+          </div>
+          <div>
+            Weight:
+            <Select
+              defaultValue={{ label: '35', value: '35' }}
+              onChange={setWeight}
+              options={weightOptions}
+              className='input-add-equip'
+            />
+          </div>
+          <button type='submit' className='add-equip-button'>Add Equipment</button>
+        </form>
+      </div>
+    </div>
   )
 }
 

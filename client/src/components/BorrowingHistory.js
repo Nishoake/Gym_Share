@@ -72,6 +72,8 @@ const BorrowingHistory = () => {
     return <div>loading...</div>
   } else if (ledger.error) {
     return <div>Error retrieving Borrowing History data</div>
+  } else if (!ledger.data.myBorrowingHistory.length) {
+    return <div className="view-header"><h1>You have not lent out any equipment yet </h1></div>
   }
 
   // Creating a set of all the unique weight values
@@ -120,9 +122,9 @@ const BorrowingHistory = () => {
       <h1 className="view-header">
         My Borrowing History
       </h1>
-      <h2 className="view-header">
-        Breakdown of Your Borrowing
-      </h2>
+      <h3 className="view-header">
+        Breakdown of Your Borrowing:
+      </h3>
 
       {/* <Input
         label="Filter by Weight"
@@ -143,7 +145,44 @@ const BorrowingHistory = () => {
         onClick={() => console.log('button clicked')}
       />
       <br/> */}
-      <span><b>Weights: </b></span>
+      <div className="view-header">
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                Weights:
+              </td>
+              <td>
+                {uniqueWeights.map(weight =>
+                  <button key={weight} className='filter-button' type='button' onClick={() => filterWeight(weight)}>{weight} lb</button>
+                )}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Categories:
+              </td>
+              <td>
+                {uniqueCategories.map(category =>
+                  <button key={category} className='filter-button' type='button' onClick={() => filterWeight(category)}>{category}</button>
+                )}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Lenders:
+              </td>
+              <td>
+                {uniqueLenders.map(lender =>
+                  <button key={lender} className='filter-button' type='button' onClick={() => filterLender(lender)}>{lender}</button>
+                )}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button type='button' onClick={() => reset()}>Reset Filters</button>
+      </div>
+      {/* <span><b>Weights: </b></span>
       {uniqueWeights.map(weight =>
         <button key={weight} type='button' onClick={() => filterWeight(weight)}>{weight} lb</button>
       )}
@@ -159,7 +198,7 @@ const BorrowingHistory = () => {
       )}
       <br/>
       <br/>
-      <button type='button' onClick={() => reset()}>Reset Filters</button>
+      <button type='button' onClick={() => reset()}>Reset Filters</button> */}
 
       <br/>
       <br/>
