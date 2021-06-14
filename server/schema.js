@@ -21,6 +21,9 @@ pool.on('error', (err, client) => {
   process.exit(-1)
 })
 
+// User ID constant to enable demo without authentication
+const userID = process.env.userID
+
 // Type Definitions
 const typeDefs = gql`
   type User {
@@ -217,7 +220,7 @@ const resolvers = {
       //   context.currentUser.id,
       // ]
       const values = [
-        '9091b57448631e1e'
+        userID
       ]
 
       try {
@@ -257,7 +260,7 @@ const resolvers = {
       //   context.currentUser.id,
       // ]
       const values = [
-        '9091b57448631e1e'
+        userID
       ]
 
       try {
@@ -296,7 +299,7 @@ const resolvers = {
       //   context.currentUser.id,
       // ]
       const values = [
-        '9091b57448631e1e'
+        userID
       ]
 
       try {
@@ -322,7 +325,7 @@ const resolvers = {
       //   context.currentUser.id,
       // ]
       const values = [
-        '9091b57448631e1e'
+        userID
       ]
 
       try {
@@ -348,7 +351,7 @@ const resolvers = {
       //   context.currentUser.id,
       // ]
       const values = [
-        '9091b57448631e1e'
+        userID
       ]
 
       try {
@@ -423,7 +426,7 @@ const resolvers = {
       // ]
       const values = [
         id,
-        '9091b57448631e1e',
+        userID,
         args.category,
         args.weight,
       ]
@@ -452,7 +455,7 @@ const resolvers = {
       const client = await pool.connect()
 
       const values = [
-        '9091b57448631e1e',
+        userID,
         args.id
       ]
 
