@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
-import TableHistory from './TableData'
+import TablePersonal from './TablePersonal'
 import { MY_EQUIPMENT } from '../queries'
 import { ADD_EQUIPMENT, REMOVE_HOLD } from '../mutations'
 import Select from 'react-select'
@@ -35,17 +35,20 @@ const Equipment = () => {
   const newEquipment = async (event) => {
     event.preventDefault()
 
-    await addEquipment({
-      variables: {
-        category: category,
-        weight: parseInt(weight)
-      }
-    })
+    if (category.value && weight.value){
 
-    console.log(`Creating a new piece of equipment category: ${category} weight: ${weight}`)
+      await addEquipment({
+        variables: {
+          category: category.value,
+          weight: parseInt(weight.value)
+        }
+      })
 
-    setCategory('')
-    setWeight('')
+      setCategory('')
+      setWeight('')
+    }
+
+    return
   }
 
   // Defining useMutation Hook for removing a hold
@@ -198,9 +201,9 @@ const Equipment = () => {
     <div>
       <h1 className="view-header">My Equipment</h1>
 
-      <TableHistory label="Available" equipment={available}/>
-      <TableHistory label="On Hold" equipment={onHold} />
-      <TableHistory label="Checked Out" equipment={checkedOut} />
+      <TablePersonal label="Available" equipment={available}/>
+      <TablePersonal label="On Hold" equipment={onHold} />
+      <TablePersonal label="Checked Out" equipment={checkedOut} />
 
       {/* Will add form validation after and add CSS styles, specifically the margin to get rid of the br elements*/}
       <div className="view-header">
@@ -208,7 +211,6 @@ const Equipment = () => {
           <div>
             Category:
             <Select
-              defaultValue={{ label: 'Dumbbell', value: 'Dumbbell' }}
               onChange={setCategory}
               options={categoryOptions}
               className='input-add-equip'
@@ -217,7 +219,6 @@ const Equipment = () => {
           <div>
             Weight:
             <Select
-              defaultValue={{ label: '35', value: '35' }}
               onChange={setWeight}
               options={weightOptions}
               className='input-add-equip'
