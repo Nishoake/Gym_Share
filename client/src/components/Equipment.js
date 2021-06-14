@@ -201,9 +201,11 @@ const Equipment = () => {
     <div>
       <h1 className="view-header">My Equipment</h1>
 
-      <TablePersonal label="Available" equipment={available}/>
-      <TablePersonal label="On Hold" equipment={onHold} />
-      <TablePersonal label="Checked Out" equipment={checkedOut} />
+      <div className="rows">
+        <TablePersonal label="Available" equipment={available}/>
+        <TablePersonal label="On Hold" equipment={onHold} />
+        <TablePersonal label="Checked Out" equipment={checkedOut} />
+      </div>
 
       {/* Will add form validation after and add CSS styles, specifically the margin to get rid of the br elements*/}
       <div className="view-header">

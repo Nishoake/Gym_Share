@@ -215,3 +215,10 @@ a:visited {
   color: var(--text-secondary);
   margin-bottom: var(--card-margin);
 }
+
+.rows {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
