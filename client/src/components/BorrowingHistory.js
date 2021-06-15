@@ -73,7 +73,7 @@ const BorrowingHistory = () => {
   } else if (ledger.error) {
     return <div>Error retrieving Borrowing History data</div>
   } else if (!ledger.data.myBorrowingHistory.length) {
-    return <div className="view-header"><h1>You have not lent out any equipment yet </h1></div>
+    return <div className="view-header"><h1>You have not borrowed any equipment yet</h1></div>
   }
 
   // Creating a set of all the unique weight values

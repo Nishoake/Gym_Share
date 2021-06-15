@@ -23,7 +23,7 @@ const LendingHistory = () => {
   } else if (ledger.error) {
     return <div>Error retrieving Lending History data</div>
   } else if (!ledger.data.myLendingHistory.length) {
-    return <div className="view-header"><h1>You have not lent out any equipment yet </h1></div>
+    return <div className="view-header"><h1>You have not lent out any equipment yet</h1></div>
   }
 
   return (
