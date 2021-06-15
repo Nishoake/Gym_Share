@@ -5,36 +5,12 @@ import App from './App'
 
 import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider } from '@apollo/client'
 
-console.log(`Environment: ${process.env.NODE_ENV}`)
-
-function determineEnivironment() {
+function determineNodeEnivironment() {
   if (process.env.NODE_ENV === "development") return 'http://localhost:3006/graphql'
   return 'https://gym-share.herokuapp.com/graphql'
 }
 
-// For hosting and testing
-// if (process.env.NODE_ENV === "development"){
-//   const apiURI = 'http://localhost:3006/graphql'
-
-//   const client = new ApolloClient({
-//     cache: new InMemoryCache(),
-//     link: new HttpLink({
-//       uri: apiURI
-//     })
-//   })
-
-//   ReactDOM.render(
-//     <ApolloProvider client={client}>
-//       <App />
-//     </ApolloProvider>,
-//     document.getElementById('root')
-//   )
-
-//   // return
-// }
-
-// const apiURI = 'https://gym-share.herokuapp.com/graphql'
-const apiURI = determineEnivironment()
+const apiURI = determineNodeEnivironment()
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
