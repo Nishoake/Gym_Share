@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
-import TablePersonal from './TablePersonal'
+import AvailableTable from './AvailableTable'
+import ActiveTable from './ActiveTable'
 import { MY_EQUIPMENT } from '../queries'
 import { ADD_EQUIPMENT, REMOVE_HOLD } from '../mutations'
 import Select from 'react-select'
@@ -202,9 +203,23 @@ const Equipment = () => {
       <h1 className="view-header">My Equipment</h1>
 
       <div className="rows">
-        <TablePersonal label="Available" equipment={available}/>
-        <TablePersonal label="On Hold" equipment={onHold} />
-        <TablePersonal label="Checked Out" equipment={checkedOut} />
+        <AvailableTable label="Available" equipment={available}/>
+        <ActiveTable 
+          primaryLabel="On Hold"
+          secondaryLabel="Requested By"
+          equipment={onHold}
+          primaryFunction={holdRemove}
+          secondaryFunction={holdRemove}
+          primaryButtonLabel="Remove Hold"
+          secondaryButtonLabel="Check Out"
+        />
+        <ActiveTable 
+          primaryLabel="Checked Out"
+          secondaryLabel="Borrower"
+          equipment={checkedOut}
+          primaryFunction={holdRemove}
+          primaryButtonLabel="Check In"
+        />
       </div>
 
       {/* Will add form validation after and add CSS styles, specifically the margin to get rid of the br elements*/}

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const TablePersonal = ({ label, equipment, eventHandler, buttonLabel }) => {
+const AvailableTable = ({ label, equipment }) => {
   
   return (
     <div className="card">
@@ -27,4 +27,4 @@ const TablePersonal = ({ label, equipment, eventHandler, buttonLabel }) => {
   )
 }
 
-export default TablePersonal
+export default AvailableTable
