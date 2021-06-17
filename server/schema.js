@@ -480,15 +480,16 @@ const resolvers = {
     },
 
     removeHold: async (root, args, context) => {
-      // Check for authorization
-      if (!currentUser) {
-        throw new AuthenticationError("not authorized")
-      }
+      // // Check for authorization
+      // if (!currentUser) {
+      //   throw new AuthenticationError("not authorized")
+      // }
 
       const client = await pool.connect()
 
       const values = [
-        context.currentUser.id,
+        // context.currentUser.id,
+        userID,
         args.id
       ]
       
@@ -506,16 +507,16 @@ const resolvers = {
     },
 
     checkOut: async (root, args, context) => {
-      // Check for authorization
-      if (!currentUser) {
-        throw new AuthenticationError("not authorized")
-      }
+      // // Check for authorization
+      // if (!currentUser) {
+      //   throw new AuthenticationError("not authorized")
+      // }
 
       const client = await pool.connect()
 
       try {
         // Retrieve the ID of the user that placed the hold
-        const { rows } = await client.query('SELECT hold_user_id FROM equipment WHERE id = ($1) AND user_id = ($2)', [args.id, context.currentUser.id])
+        const { rows } = await client.query('SELECT hold_user_id FROM equipment WHERE id = ($1) AND user_id = ($2)', [args.id, userID])
         const hold_user_id = rows[0].hold_user_id
         
         // Generate the necessary data to create a transaction
@@ -529,7 +530,8 @@ const resolvers = {
         const values = [
           id,
           hold_user_id,
-          context.currentUser.id,
+          // context.currentUser.id,
+          userID,
           args.id,
           checkOutTS
         ]
@@ -553,10 +555,10 @@ const resolvers = {
     },
     
     checkIn: async (root, args, context) => {
-      // Check for authorization
-      if (!currentUser) {
-        throw new AuthenticationError("not authorized")
-      }
+      // // Check for authorization
+      // if (!currentUser) {
+      //   throw new AuthenticationError("not authorized")
+      // }
       
       const client = await pool.connect()
 

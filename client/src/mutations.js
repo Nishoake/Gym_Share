@@ -44,3 +44,33 @@ export const REMOVE_HOLD = gql`
     }
   }
 `
+
+export const CHECK_OUT = gql`
+  mutation checkOut($id: String!){
+    removeHold(
+      id: $id
+    ) {
+      id,
+      borrower_id,
+      lender_id,
+      equipment_id,
+      check_out_timestamp,
+      check_in_timestamp
+    }
+  }
+`
+
+export const CHECK_IN = gql`
+  mutation checkIn($id: String!){
+    removeHold(
+      id: $id
+    ) {
+      id,
+      borrower_id,
+      lender_id,
+      equipment_id,
+      check_out_timestamp,
+      check_in_timestamp
+    }
+  }
+`
