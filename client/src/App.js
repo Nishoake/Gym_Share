@@ -94,7 +94,7 @@ function App() {
           <div className="sidebar">
             <NavLink to="/" className="footer">
                 <img src={profilePictureURL} alt="Profile Picture" className="avatar" />
-                <h5>Dashboard</h5>
+                <h6>Dashboard</h6>
             </NavLink>
 
             <NavLink 
@@ -106,7 +106,7 @@ function App() {
               }}
             >
               <i className="fas fa-store fa-2x" />
-              <h5>Marketplace</h5>
+              <h6>Marketplace</h6>
             </NavLink>
 
             
@@ -120,7 +120,7 @@ function App() {
             >
               <i className="fas fa-dumbbell fa-2x icon-mobile" />
               <div className="caption">
-                <h5>Equipment</h5>
+                <h6>Equipment</h6>
               </div>
             </NavLink>
            
@@ -134,7 +134,7 @@ function App() {
               }}
             >
               <i class="fas fa-hand-holding-medical fa-2x" />
-              <h5>Borrowing History</h5>
+              <h6>Borrowing History</h6>
             </NavLink>
 
             <NavLink 
@@ -146,7 +146,7 @@ function App() {
               }}
             >
               <i class="fas fa-handshake fa-2x" />
-              <h5>Lending History</h5>
+              <h6>Lending History</h6>
             </NavLink>
 
 
