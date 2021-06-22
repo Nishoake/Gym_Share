@@ -164,7 +164,7 @@ const BorrowingHistory = () => {
               </td>
               <td>
                 {uniqueCategories.map(category =>
-                  <button key={category} className='filter-button' type='button' onClick={() => filterWeight(category)}>{category}</button>
+                  <button key={category} className='filter-button' type='button' onClick={() => filterCategory(category)}>{category}</button>
                 )}
               </td>
             </tr>
@@ -182,23 +182,6 @@ const BorrowingHistory = () => {
         </table>
         <button type='button' onClick={() => reset()}>Reset Filters</button>
       </div>
-      {/* <span><b>Weights: </b></span>
-      {uniqueWeights.map(weight =>
-        <button key={weight} type='button' onClick={() => filterWeight(weight)}>{weight} lb</button>
-      )}
-      <br/>
-      <span><b>Categories: </b></span>
-      {uniqueCategories.map(category =>
-        <button key={category} type='button' onClick={() => filterWeight(category)}>{category}</button>
-      )}
-      <br/>
-      <span><b>Lenders: </b></span>
-      {uniqueLenders.map(lender =>
-        <button key={lender} type='button' onClick={() => filterLender(lender)}>{lender}</button>
-      )}
-      <br/>
-      <br/>
-      <button type='button' onClick={() => reset()}>Reset Filters</button> */}
 
       <br/>
       <br/>
@@ -207,7 +190,9 @@ const BorrowingHistory = () => {
       <h2 className="view-header">
         Ledger of Transactions
       </h2>
-      <TableHistory transactions={transactions} columnLabel="Lender" />
+      <div className="rows">
+        <TableHistory transactions={transactions} columnLabel="Lender" />
+      </div>
     </div>
   )
 }

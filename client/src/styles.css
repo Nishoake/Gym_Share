@@ -6,7 +6,9 @@
   font-family: 'Alata', sans-serif;
   background-color: #f3f4f6;
   --gap: 14rem;
+  --mobile-gap: 7rem;
   --pad-left: 25px;
+  --mobile-pad-left: 5px;
   --text-primary: #cdc8c8;
   --text-secondary: #ffffff;
   --hover-color: #CA3433;
@@ -35,20 +37,6 @@ body::-webkit-scrollbar-thumb {
   background: var(--hover-color);
 }
 
-/* Card Styling */
-.card {
-  background-color: white;
-  padding: 20px 20px 50px 20px;
-  margin: var(--card-margin);
-  border-radius: 10px;
-  box-shadow: rgba(59, 59, 59, 0.05) 0px 5px 15px 0px;
-  display: flex;
-  flex-direction: column;
-  justify-self: flex-start;
-  align-items: flex-start;
-  /* z-index: -1; */
-}
-
 /* Button styling */
 button {
   color: var(--text-secondary);
@@ -56,7 +44,6 @@ button {
   border: 2px solid black;
   border-radius: 5px;
   border-color: var(--button-hover);
-  /* box-shadow: 3px 3px 7px #ededed, -3px -3px 7px #ffffff; */
   background-color: var(--button-hover);
   padding: 8px 25px;
   transition-duration: 0.4s;
@@ -68,54 +55,6 @@ button:hover {
   color: var(--button-hover);
 }
 
-
-/* Arrangement rules for desktop views */
-/* .container {
-  display: grid;
-  height: 100vh;
-  grid-template-columns: 0.8fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr;
-  grid-template-areas:
-    "sidebar main main main";
-} */
-
-.main {
-  margin-left: var(--gap);
-  padding: 1rem;
-}
-
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  background-color: var(--sidebar-color);
-  height: 100%;
-  width: var(--gap);
-  z-index: 1;
-  top: 0;
-  left: 0;
-  position: fixed;
-  overflow: scroll;
-  /* visibility: hidden;  */
-  /* background-color: #282830; */
-  /* margin-top: -10px;
-  margin-left: -10px; */
-}
-
-
-/* .main {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  grid-area: main;
-  background-color: #fddcdf;
-  background-color: #191e28;
-  padding-left: 20px;
-} */
-
-
 /* Navbar styling */
 a {
   text-decoration: none;
@@ -126,99 +65,254 @@ a:visited {
   color: var(--text-primary);
 }
 
-.logo {
-  font-family: 'Graduate', cursive;
-  color: var(--text-secondary);
-  margin-left: 15px;
-  /* display: inline; */
-}
-
-.link {
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-left: var(--pad-left);
-  width: calc(var(--gap) - var(--pad-left));
-}
-
-.nav-select {
-  display: flexbox;
-  justify-content: flex-start;
-  align-items: center;
-  transition: 150ms ease;
-}
-
 .nav-select:hover {
   background-color: var(--hover-color);
   color: var(--text-secondary);
 }
 
 .selected {
-  /* fontWeight: "bold"; */
   color: var(--text-secondary);
 }
 
-/* .sidebar:last-child {
-  color: blue;
-} */
-
-/* Link:last-child {
-  text-decoration: underline;
-} */
-
-/* button:last-child {
-  margin: auto;
+/* Navbar Mobile Styling */
+.footer {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-} */
-
-.logout-button {
-  margin-top: auto;
-  margin-bottom: 2rem;
-  margin-left: var(--pad-left);
-}
-
-.avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-}
-
-.icon-spacing {
-  margin-right: 1rem;
-}
-
-.view-header {
-  margin-left: var(--card-margin);
-}
-
-.filter-button {
-  margin-left: var(--button-margin);
-  margin-right: var(--button-margin);
-}
-
-.input-add-equip {
-  width: var(--gap);
-}
-
-.add-equip-button {
-  margin-top: var(--button-margin);
-}
-
-.welcome {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
-  font-family: 'Graduate', cursive;
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  margin-bottom: var(--card-margin);
+  padding: 0px;
 }
 
-.rows {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
+h5 {
+  margin: 10px;
+}
+
+caption {
+  display: table;
+  vertical-align: center;
+}
+
+
+@media (min-width: 800px) {
+  .sidebar-mobile {
+    display: none;
+  }
+
+  .main {
+    margin-left: var(--gap);
+    padding: 1rem;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background-color: var(--sidebar-color);
+    height: 100%;
+    width: var(--gap);
+    z-index: 1;
+    top: 0;
+    left: 0;
+    position: fixed;
+    overflow: scroll;
+    /* visibility: hidden;  */
+    /* background-color: #282830; */
+    /* margin-top: -10px;
+    margin-left: -10px; */
+  }
+
+  /* Card Styling */
+  .card {
+    background-color: white;
+    padding: 20px 20px 50px 20px;
+    margin: var(--card-margin);
+    border-radius: 10px;
+    box-shadow: rgba(59, 59, 59, 0.05) 0px 5px 15px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-self: flex-start;
+    align-items: flex-start;
+  }
+
+  .logo {
+    font-family: 'Graduate', cursive;
+    color: var(--text-secondary);
+    margin-left: 15px;
+    /* display: inline; */
+  }
+
+  .link {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: var(--pad-left);
+    width: calc(var(--gap) - var(--pad-left));
+  }
+
+  .nav-select {
+    display: flexbox;
+    justify-content: flex-start;
+    align-items: center;
+    transition: 150ms ease;
+  }
+
+
+
+  .logout-button {
+    margin-top: auto;
+    margin-bottom: 2rem;
+    margin-left: var(--pad-left);
+  }
+
+  .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+  }
+
+  .icon-spacing {
+    margin-right: 1rem;
+  }
+
+  .view-header {
+    margin-left: var(--card-margin);
+  }
+
+  .filter-button {
+    margin-left: var(--button-margin);
+    margin-right: var(--button-margin);
+  }
+
+  .input-add-equip {
+    width: var(--gap);
+  }
+
+  .add-equip-button {
+    margin-top: var(--button-margin);
+  }
+
+  .welcome {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Graduate', cursive;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--card-margin);
+  }
+
+  /* Used to control layout of container holding cards */
+  .rows {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 800px) {
+
+  .icon-mobile {
+    margin: auto;
+  }
+
+  .sidebar-desktop {
+    display: none;
+  }
+
+  .main {
+    margin-bottom: var(--mobile-gap);
+    padding: 1rem;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--sidebar-color);
+    height: var(--mobile-gap);
+    width: 100%;
+    z-index: 1;
+    bottom: 0;
+    /* left: 0; */
+    position: fixed;
+    overflow: scroll;
+  }
+
+  /* Card Styling */
+  /* Removed margin property to center card in mobile-view */
+  .card {
+    background-color: white;
+    padding: 20px 20px 50px 20px;
+    /* margin-right: Calc(2 * var(--card-margin)); */
+    margin-bottom: Calc(2 * var(--card-margin));
+    border-radius: 10px;
+    box-shadow: rgba(59, 59, 59, 0.05) 0px 5px 15px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-self: flex-start;
+    align-items: flex-start;
+    justify-content: space-evenly;
+  }
+
+  .logo {
+    font-family: 'Graduate', cursive;
+    color: var(--text-secondary);
+    margin-left: 15px;
+    /* display: inline; */
+  }
+
+  .link {
+    padding: 10px;
+    /* padding-left: var(--mobile-pad-left); */
+    /* width: calc(var(--gap) - var(--mobile-pad-left)); */
+  }
+
+  .nav-select {
+    display: flexbox;
+    justify-content: flex-start;
+    align-items: center;
+    transition: 150ms ease;
+  }
+
+  .logout-button {
+    margin-top: auto;
+    margin-bottom: 2rem;
+    margin-left: var(--pad-left);
+  }
+
+  .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+  }
+
+  .input-add-equip {
+    width: var(--gap);
+  }
+
+  .add-equip-button {
+    margin-top: var(--button-margin);
+  }
+
+  .welcome {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Graduate', cursive;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--card-margin);
+  }
+
+  /* Used to control layout of container holding cards */
+  .rows {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
 }

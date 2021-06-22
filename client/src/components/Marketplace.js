@@ -8,8 +8,8 @@ const Marketplace = () => {
 
   // Application State
   const [available, setAvailable] = useState([])
-  const [onHold, setOnHold] = useState([])
-  const [checkedOut, setCheckedOut] = useState([])
+  // const [onHold, setOnHold] = useState([])
+  // const [checkedOut, setCheckedOut] = useState([])
 
   // Defining the useQuery Hooks
   const green = useQuery(ALL_OTHER_EQUIPMENT, { variables: { type: "available" } })
@@ -47,19 +47,19 @@ const Marketplace = () => {
     }
   }, [green.data]) // eslint-disable-line
 
-  // Equipment on hold Hook
-  useEffect(() => {
-    if(yellow.data){
-      setOnHold(yellow.data.allOtherEquipment)
-    }
-  }, [yellow.data]) // eslint-disable-line
+  // // Equipment on hold Hook
+  // useEffect(() => {
+  //   if(yellow.data){
+  //     setOnHold(yellow.data.allOtherEquipment)
+  //   }
+  // }, [yellow.data]) // eslint-disable-line
 
-  // Equipment checked out Hook
-  useEffect(() => {
-    if(red.data){
-      setCheckedOut(red.data.allOtherEquipment)
-    }
-  }, [red.data]) // eslint-disable-line
+  // // Equipment checked out Hook
+  // useEffect(() => {
+  //   if(red.data){
+  //     setCheckedOut(red.data.allOtherEquipment)
+  //   }
+  // }, [red.data]) // eslint-disable-line
 
   if (green.loading || yellow.loading || red.loading)  {
     return <div>loading...</div>
@@ -72,10 +72,10 @@ const Marketplace = () => {
       <h1 className="view-header">
         Marketplace
       </h1>
+      <div className="rows">
+        <TableHistory label="Available Equipment" equipment={available} eventHandler={placeHold} buttonLabel="Place Hold" />
+      </div>
 
-      <TableHistory label="Available Equipment" equipment={available} eventHandler={placeHold} buttonLabel="Place Hold" />
-      {/* <TableHistory label="Equipment Placed on Hold" equipment={onHold} /> */}
-      {/* <TableHistory label="Equipment Checked Out" equipment={checkedOut} /> */}
     </div>
   )
 }

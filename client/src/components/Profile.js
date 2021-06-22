@@ -13,7 +13,7 @@ const Profile = () => {
   // Available Equipment Hook
   useEffect(() => {
     if (account.data) {
-      setInfo(account.data.myAccount)
+      setInfo(account.data.myAccount[0])
     }
   }, [account.data]) // eslint-disable-line
 
@@ -27,20 +27,55 @@ const Profile = () => {
   return(
     <div>
       <h1 className="view-header">Dashboard</h1>
-      <div className="card">
-      {/* <p><b>Name:</b> {info[0].name}</p>
-      <p><b>Number:</b> {info[0].number}</p>
-      <p><b>Email:</b> {info[0].email}</p>
-      <p><b>House:</b> {info[0].house}</p>
-      <p><b>Street:</b> {info[0].street}</p>
-      <p><b>City:</b> {info[0].city}</p> */}
-        <p><b>Name:</b> Brock Harrison</p>
-        <p><b>Number:</b> 647-787-4515</p>
-        <p><b>Email:</b> Brock@Kanto.com</p>
-        <p><b>House:</b> 14</p>
-        <p><b>Street:</b> Route 5</p>
-        <p><b>City:</b> Pewter City</p>
-      </div>
+        <div className="rows">
+          <div className="card">
+            <h2 style={{"text-decoration": "underline"}}>Account Info:</h2>
+
+            <p><b>Name:</b> {info.name}</p>
+            <p><b>Number:</b> {info.number}</p>
+            <p><b>Email:</b> {info.email}</p>
+            <p><b>House:</b> {info.house}</p>
+            <p><b>Street:</b> {info.street}</p>
+            <p><b>City:</b> {info.city}</p>
+            
+          </div>
+          <div className="card">
+            <h2 style={{"text-decoration": "underline"}}>Stats For Me:</h2>
+
+            <p><b>Name:</b> {info.name}</p>
+            <p><b>Number:</b> {info.number}</p>
+            <p><b>Email:</b> {info.email}</p>
+            <p><b>House:</b> {info.house}</p>
+            <p><b>Street:</b> {info.street}</p>
+            <p><b>City:</b> {info.city}</p>
+            
+          </div>
+        </div>
+        <div className="rows">
+          <div className="card">
+          <h2 style={{ "text-decoration": "underline" }}>Equipment I Have Requested On Hold:</h2>
+
+            <p><b>Name:</b> {info.name}</p>
+            <p><b>Number:</b> {info.number}</p>
+            <p><b>Email:</b> {info.email}</p>
+            <p><b>House:</b> {info.house}</p>
+            <p><b>Street:</b> {info.street}</p>
+            <p><b>City:</b> {info.city}</p>
+            
+          </div>
+          <div className="card">
+            <h2 style={{"text-decoration": "underline"}}>Equipment I Am Currently Borrowing:</h2>
+
+            <p><b>Name:</b> {info.name}</p>
+            <p><b>Number:</b> {info.number}</p>
+            <p><b>Email:</b> {info.email}</p>
+            <p><b>House:</b> {info.house}</p>
+            <p><b>Street:</b> {info.street}</p>
+            <p><b>City:</b> {info.city}</p>
+            
+          </div>
+        </div>
+        
 
     </div>
     

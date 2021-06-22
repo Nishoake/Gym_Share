@@ -23,43 +23,141 @@ function App() {
 
   return (
     <div>
-    {/* <div className="container"> */}
 
       <HashRouter>
-        <div className="sidebar">
-          <NavLink to="/">
-            <h1 className="logo">GYM SHARE</h1>
-            <div className='welcome'>
-              <img src={profilePictureURL} alt="Profile Picture" className="avatar" />
-              Welcome {userName}!
-            </div>
-          </NavLink>
-          <NavLink to="/marketplace" className="link nav-select" activeStyle={{
-            fontWeight: "bold",
-            color: "white"
-          }}><i className="fas fa-store icon-spacing"/>Marketplace</NavLink>
-          <NavLink to="/equipment" className="link nav-select" activeStyle={{
-            fontWeight: "bold",
-            color: "white"
-          }}><i class="fas fa-dumbbell icon-spacing"/>My Equipment</NavLink>
-          <NavLink to="/borrowingHistory" className="link nav-select" activeStyle={{
-            fontWeight: "bold",
-            color: "white"
-          }}><i class="fas fa-arrow-left icon-spacing"/>Borrowing History</NavLink>
-          <NavLink to="/lendingHistory" className="link nav-select" activeStyle={{
-            fontWeight: "bold",
-            color: "white"
-          }}><i class="fas fa-arrow-right icon-spacing" />Lending History</NavLink>
-          {/* Disabled logout button for demo purposes */}
-          {/* <button className="logout-button" disabled><i class="fas fa-sign-out-alt icon-spacing"/>Logout</button> */}
+        <div className="sidebar-desktop">
+          <div className="sidebar">
+            <NavLink to="/">
+              <h1 className="logo mobile-only">GYM SHARE</h1>
+              <div className="welcome desktop-only">
+                <img src={profilePictureURL} alt="Profile Picture" className="avatar" />
+                Welcome {userName}!
+              </div>
+            </NavLink>
 
+
+            <NavLink 
+              to="/marketplace" 
+              className="link nav-select" 
+              activeStyle={{
+                fontWeight: "bold",
+                color: "white"
+              }}
+            >
+              <i className="fas fa-store icon-spacing" />
+              Marketplace
+            </NavLink>
+
+            <NavLink 
+              to="/equipment" 
+              className="link nav-select" 
+              activeStyle={{
+                fontWeight: "bold",
+                color: "white"
+              }}
+            >
+              <i class="fas fa-dumbbell icon-spacing" />
+              Equipment
+            </NavLink>
+
+            <NavLink 
+              to="/borrowingHistory" 
+              className="link nav-select" 
+              activeStyle={{
+                fontWeight: "bold",
+                color: "white"
+              }}
+            >
+              <i class="fas fa-hand-holding-medical icon-spacing" />
+              Borrowing History
+            </NavLink>
+
+            <NavLink 
+              to="/lendingHistory" 
+              className="link nav-select" 
+              activeStyle={{
+                fontWeight: "bold",
+                color: "white"
+              }}
+            >
+              <i class="fas fa-handshake icon-spacing" />
+              Lending History
+            </NavLink>
+
+
+            {/* Disabled logout button for demo purposes */}
+            {/* <button className="logout-button" disabled><i class="fas fa-sign-out-alt icon-spacing"/>Logout</button> */}
+          </div>
         </div>
 
-        {/* <div className="topbar">
-          <header>
-            Gym Share
-          </header>
-        </div> */}
+        <div className="sidebar-mobile">
+          <div className="sidebar">
+            <NavLink to="/" className="footer">
+                <img src={profilePictureURL} alt="Profile Picture" className="avatar" />
+                <h5>Dashboard</h5>
+            </NavLink>
+
+            <NavLink 
+              to="/marketplace" 
+              className="footer"
+              activeStyle={{
+                fontWeight: "bold",
+                color: "white"
+              }}
+            >
+              <i className="fas fa-store fa-2x" />
+              <h5>Marketplace</h5>
+            </NavLink>
+
+            
+            <NavLink 
+              to="/equipment" 
+              className="footer"
+              activeStyle={{
+                fontWeight: "bold",
+                color: "white"
+              }}
+            >
+              <i className="fas fa-dumbbell fa-2x icon-mobile" />
+              <div className="caption">
+                <h5>Equipment</h5>
+              </div>
+            </NavLink>
+           
+
+            <NavLink 
+              to="/borrowingHistory" 
+              className="footer"
+              activeStyle={{
+                fontWeight: "bold",
+                color: "white"
+              }}
+            >
+              <i class="fas fa-hand-holding-medical fa-2x" />
+              <h5>Borrowing History</h5>
+            </NavLink>
+
+            <NavLink 
+              to="/lendingHistory" 
+              className="footer"
+              activeStyle={{
+                fontWeight: "bold",
+                color: "white"
+              }}
+            >
+              <i class="fas fa-handshake fa-2x" />
+              <h5>Lending History</h5>
+            </NavLink>
+
+
+            {/* Disabled logout button for demo purposes */}
+            {/* <button className="logout-button" disabled><i class="fas fa-sign-out-alt icon-spacing"/>Logout</button> */}
+          </div>
+        </div>
+
+        
+
+
         <div className="main">
           <Switch>
             <Route exact={true} path="/">

@@ -31,8 +31,9 @@ const LendingHistory = () => {
       <h1 className="view-header">
         My Lending History
       </h1>
-
-      <TableHistory transactions={transactions} columnLabel="Borrower" />
+      <div className="rows">
+        <TableHistory transactions={transactions} columnLabel="Borrower" />
+      </div>
     </div>
   )
 }
