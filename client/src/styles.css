@@ -1,3 +1,8 @@
+html {
+  margin: 0px;
+  padding: env(safe-area-inset);
+}
+
 :root {
   margin: 0;
   padding: env(safe-area-inset);
