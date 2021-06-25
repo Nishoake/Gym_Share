@@ -75,8 +75,6 @@ const Equipment = () => {
     await cancelHold({
       variables: { id: equipment }
     })
-
-    console.log(`Cancelling hold on equipment id: ${equipment}`)
   }
 
   // Check Out

@@ -45,6 +45,21 @@ export const REMOVE_HOLD = gql`
   }
 `
 
+export const CANCEL_MY_HOLD = gql`
+  mutation cancelMyHold($id: String!){
+    cancelMyHold(
+      id: $id
+    ) {
+      category,
+      weight,
+      id,
+      user_id
+      transaction_id,
+      hold_user_id
+    }
+  }
+`
+
 export const CHECK_OUT = gql`
   mutation checkOut($id: String!){
     removeHold(

@@ -73,3 +73,31 @@ export const MY_ACCOUNT = gql`
     }
   }
 `
+
+export const EQUIPMENT_COUNT = gql`
+  query{
+    equipmentCount
+  }
+`
+
+export const MY_HOLDS = gql`
+  query{
+    myHolds{
+      id,
+      category,
+      weight,
+      avatar_url
+    }
+  }
+`
+
+export const MY_CHECKOUTS = gql`
+  query{
+    myCheckOuts{
+      id,
+      category,
+      weight,
+      avatar_url
+    }
+  }
+`

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 // Importing React-Router
 import {
   // BrowserRouter as Router,
@@ -8,6 +8,8 @@ import {
   NavLink
 } from "react-router-dom"
 
+// import { useQuery } from '@apollo/client'
+// import { MY_ACCOUNT } from './queries'
 import Marketplace from './components/Marketplace'
 import Equipment from './components/Equipment'
 import BorrowingHistory from './components/BorrowingHistory'
@@ -15,11 +17,32 @@ import LendingHistory from './components/LendingHistory'
 import Profile from './components/Profile'
 import './App.css'
 
-// Defining constants
+// Defining constants for faster loading
 const profilePictureURL = 'https://cdn2.bulbagarden.net/upload/7/75/VSBrock_Masters.png'
 const userName = 'Brock'
 
 function App() {
+
+  // In production will fetch user profile image from API
+  // But for proof-of-concept to keep loading performance quick will use constants
+  // // Application State
+  // const [info, setInfo] = useState([])
+
+  // // Defining the useQuery Hooks
+  // const account = useQuery(MY_ACCOUNT)
+
+  // // Profile Info Hook
+  // useEffect(() => {
+  //   if (account.data) {
+  //     setInfo(account.data.myAccount[0])
+  //   }
+  // }, [account.data]) // eslint-disable-line
+
+  // if (account.loading) {
+  //   return <div>loading...</div>
+  // } else if (account.error) {
+  //   return <div>Error Gym Share data</div>
+  // }
 
   return (
     <div>
@@ -93,7 +116,7 @@ function App() {
         <div className="sidebar-mobile">
           <div className="sidebar">
             <NavLink to="/" className="footer">
-                <img src={profilePictureURL} alt="Profile Picture" className="avatar" />
+              <img src={profilePictureURL} alt="Profile Picture" className="avatar" />
                 <h6>Dashboard</h6>
             </NavLink>
 

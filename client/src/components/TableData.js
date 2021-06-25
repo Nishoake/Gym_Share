@@ -21,12 +21,6 @@ const TableHistory = ({ label, equipment, eventHandler, buttonLabel }) => {
             <th>
               Owner
             </th>
-            {/* <th>
-              Number
-            </th>
-            <th>
-              Name
-            </th> */}
             <th>
               {buttonLabel}
             </th>
@@ -35,8 +29,6 @@ const TableHistory = ({ label, equipment, eventHandler, buttonLabel }) => {
             <tr key={e.id}>
               <td>{e.category}</td>
               <td>{e.weight}</td>
-              {/* <td>{e.name}</td>
-              <td>{e.number}</td> */}
               <td><img src={e.avatar_url} alt="Gym Leader" className="avatar"/></td>
               <td><button onClick={() => eventHandler(e.id)}>{buttonLabel}</button></td>
             </tr>

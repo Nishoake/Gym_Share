@@ -21,9 +21,6 @@ const TableData = ({ transactions, columnLabel }) => {
             </th>
             <th>
               {columnLabel}
-              </th>
-            <th>
-              Number
             </th>
           </tr>
           {transactions.map(e =>
@@ -32,8 +29,7 @@ const TableData = ({ transactions, columnLabel }) => {
               <td>{e.weight}</td>
               <td>{e.check_out_timestamp}</td>
               <td>{e.check_in_timestamp}</td>
-              <td>{e.name}</td>
-              <td>{e.number}</td>
+              <td><img src={e.avatar_url} alt="Gym Leader" className="avatar" /></td>
             </tr>
           )}
         </tbody>

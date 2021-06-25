@@ -72,6 +72,12 @@ const typeDefs = gql`
     number: String!
     avatar_url: String
   }
+  type Dashboard {
+    id: ID!
+    category: String!
+    weight: Int!
+    avatar_url: String
+  }
   type Token {
     value: String!
   }
@@ -87,6 +93,8 @@ const typeDefs = gql`
     myBorrowingHistory: [History!]!
     myLendingHistory: [History!]!
     myAccount: [User!]!
+    myHolds: [Dashboard!]!
+    myCheckOuts: [Dashboard!]!
   }
 
   type Mutation {
@@ -98,6 +106,9 @@ const typeDefs = gql`
       id: String!
     ): Equipment
     removeHold(
+      id: String!
+    ): Equipment
+    cancelMyHold(
       id: String!
     ): Equipment
     checkOut(
@@ -151,7 +162,7 @@ const resolvers = {
       try {
         const { rows } = await client.query('SELECT COUNT (id) FROM user_table')
         console.table(rows)
-        return rows[0].count
+        return rows
 
       } catch (error) {
         console.log(`WARNING: ${error}`)
@@ -164,8 +175,17 @@ const resolvers = {
 
     equipmentCount: async () => {
       const client = await pool.connect()
+
+      // Uncomment once testing of views has been complete
+      // const values = [
+      //   context.currentUser.id,
+      // ]
+      const values = [
+        userID
+      ]
+
       try {
-        const { rows } = await client.query('SELECT COUNT (id) FROM equipment')
+        const { rows } = await client.query('SELECT COUNT (*) FROM equipment WHERE user_id = ($1)', values)
         console.table(rows)
         return rows[0].count
 
@@ -367,6 +387,60 @@ const resolvers = {
         console.log('Client has been successfully released!')
       }
     },
+
+
+    myHolds: async (root, args, context) => {
+      const client = await pool.connect()
+
+      // Uncomment once testing of views has been complete
+      // const values = [
+      //   context.currentUser.id,
+      // ]
+      const values = [
+        userID
+      ]
+
+      try {
+        const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.avatar_url FROM equipment as e INNER JOIN user_table as u ON e.user_id = u.id WHERE hold_user_id = ($1)', values)
+        console.table(rows)
+        console.log(rows)
+        return rows
+
+      } catch (error) {
+        console.log(`WARNING: ${error}`)
+      } finally {
+        client.release()
+        console.log('Client has been successfully released!')
+      }
+    },
+
+
+    myCheckOuts: async (root, args, context) => {
+      const client = await pool.connect()
+
+      // Uncomment once testing of views has been complete
+      // const values = [
+      //   context.currentUser.id,
+      // ]
+      const values = [
+        userID
+      ]
+
+      try {
+        const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.avatar_url FROM transactions as t INNER JOIN equipment as e on t.lender_id = e.user_id INNER JOIN user_table as u on t.lender_id = u.id WHERE check_in_timestamp IS NULL AND borrower_id = ($1)', values)
+        console.table(rows)
+        console.log(rows)
+        return rows
+
+      } catch (error) {
+        console.log(`WARNING: ${error}`)
+      } finally {
+        client.release()
+        console.log('Client has been successfully released!')
+      }
+    },
+
+
   },
 
 
@@ -494,7 +568,34 @@ const resolvers = {
       ]
       
       try {
-        const { rows } = await client.query('UPDATE equipment SET hold_user_id IS NULL WHERE user_id = ($1) AND id = ($2) RETURNING *', values)
+        const { rows } = await client.query('UPDATE equipment SET hold_user_id = NULL WHERE user_id = ($1) AND id = ($2) RETURNING *', values)
+        console.table(rows)
+        return rows[0]
+
+      } catch (error) {
+          console.log(`WARNING: ${error}`)
+      } finally {
+          client.release()
+          console.log('Client has been successfully released!')
+      }
+    },
+
+    cancelMyHold: async (root, args, context) => {
+      // // Check for authorization
+      // if (!currentUser) {
+      //   throw new AuthenticationError("not authorized")
+      // }
+
+      const client = await pool.connect()
+
+      const values = [
+        // context.currentUser.id,
+        userID,
+        args.id
+      ]
+      
+      try {
+        const { rows } = await client.query('UPDATE equipment SET hold_user_id = NULL WHERE hold_user_id = ($1) AND id = ($2) RETURNING *', values)
         console.table(rows)
         return rows[0]
 
@@ -537,7 +638,7 @@ const resolvers = {
         ]
 
         const result = await client.query('INSERT INTO transactions (id, borrower_id, lender_id, equipment_id, check_out_timestamp) VALUES ($1, $2, $3, $4, $5) RETURNING *', values)
-        const update = await client.query('UPDATE equipment SET transaction_id = ($1), hold_user_id IS NULL WHERE id = ($2) RETURNING *', [result.rows[0].id, args.id])
+        const update = await client.query('UPDATE equipment SET transaction_id = ($1), hold_user_id = NULL WHERE id = ($2) RETURNING *', [result.rows[0].id, args.id])
 
         console.table(result.rows)
         console.log(`CO: ${result.rows[0].check_out_timestamp}`)
@@ -580,7 +681,7 @@ const resolvers = {
         const { rows } = await client.query('UPDATE transactions SET check_in_timestamp = ($1) WHERE id = ($2) RETURNING *', values)
 
         // Clear the Transaction ID field
-        await client.query('UPDATE equipment SET transaction_id IS NULL WHERE id = ($1)', [args.id])
+        await client.query('UPDATE equipment SET transaction_id = NULL WHERE id = ($1)', [args.id])
 
         console.table(rows)
         return rows[0]

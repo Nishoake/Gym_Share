@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
-import TableHistory from './TableData'
+import TableData from './TableData'
 import { ALL_OTHER_EQUIPMENT } from '../queries'
 import { PLACE_HOLD } from '../mutations'
 
@@ -73,7 +73,7 @@ const Marketplace = () => {
         Marketplace
       </h1>
       <div className="rows">
-        <TableHistory label="Available Equipment" equipment={available} eventHandler={placeHold} buttonLabel="Place Hold" />
+        <TableData label="Available Equipment" equipment={available} eventHandler={placeHold} buttonLabel="Place Hold" />
       </div>
 
     </div>
