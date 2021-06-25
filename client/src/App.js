@@ -202,41 +202,6 @@ function App() {
         </div>
         
       </HashRouter>
-        {/* <button onClick={() => setPage('marketPlace')}>Marketplace</button>
-        <button onClick={() => setPage('equipment')}>My Equipment</button>
-        <button onClick={() => setPage('borrowingHistory')}>Borrowing History</button>
-        <button onClick={() => setPage('lendingHistory')}>Lending History</button>
-        <button onClick={() => setPage('profile')}>Profile</button>
-        <button onClick={() => setPage()}>Log Out</button> */}
-      
-      
-      {/* <div className="topbar">
-        <header>
-          Gym Share
-        </header>
-      </div>
-
-      <div className="main">
-        <Marketplace
-          show={page === 'marketPlace'}
-        />
-
-        <Equipment
-          show={page === 'equipment'}
-        />
-
-        <BorrowingHistory
-          show={page === 'borrowingHistory'}
-        />
-
-        <LendingHistory
-          show={page === 'lendingHistory'}
-        />
-
-        <Profile
-          show={page === 'profile'}
-        />
-      </div> */}
       
 
     </div>
