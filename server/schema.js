@@ -147,12 +147,12 @@ const resolvers = {
         const { rows } = await client.query('SELECT name FROM test_table where id = $1', [1])
         console.table(rows)
         return rows[0].name
-
-      } catch (error) {
+      }
+      catch (error) {
         console.log(`WARNING: ${error}`)
-      } finally {
+      }
+      finally {
         client.release()
-        console.log('Client has been successfully released!')
       }
     },
 
@@ -160,15 +160,15 @@ const resolvers = {
     userCount: async () => {
       const client = await pool.connect()
       try {
-        const { rows } = await client.query('SELECT COUNT (id) FROM user_table')
+        const { rows } = await client.query(`SELECT COUNT (id) FROM user_table`)
         console.table(rows)
         return rows
-
-      } catch (error) {
+      }
+      catch (error) {
         console.log(`WARNING: ${error}`)
-      } finally {
+      }
+      finally {
         client.release()
-        console.log('Client has been successfully released!')
       }
     },
 
@@ -185,15 +185,19 @@ const resolvers = {
       ]
 
       try {
-        const { rows } = await client.query('SELECT COUNT (*) FROM equipment WHERE user_id = ($1)', values)
+        const { rows } = await client
+          .query(
+            `SELECT COUNT (*) FROM equipment WHERE user_id = ($1)`, 
+            values
+          )
         console.table(rows)
         return rows[0].count
-
-      } catch (error) {
+      }
+      catch (error) {
         console.log(`WARNING: ${error}`)
-      } finally {
+      }
+      finally {
         client.release()
-        console.log('Client has been successfully released!')
       }
     },
 
@@ -201,15 +205,15 @@ const resolvers = {
     allUsers: async () => {
       const client = await pool.connect()
       try {
-        const { rows } = await client.query('SELECT * FROM user_table')
+        const { rows } = await client.query(`SELECT * FROM user_table`)
         console.table(rows)
         return rows
-
-      } catch (error) {
+      }
+      catch (error) {
         console.log(`WARNING: ${error}`)
-      } finally {
+      }
+      finally {
         client.release()
-        console.log('Client has been successfully released!')
       }
     },
 
@@ -217,22 +221,20 @@ const resolvers = {
     allEquipment: async () => {
       const client = await pool.connect()
       try {
-        const { rows } = await client.query('SELECT * FROM equipment')
+        const { rows } = await client.query(`SELECT * FROM equipment`)
         console.table(rows)
-        console.log(rows)
         return rows
-
-      } catch (error) {
+      }
+      catch (error) {
         console.log(`WARNING: ${error}`)
-      } finally {
+      }
+      finally {
         client.release()
-        console.log('Client has been successfully released!')
       }
     },
 
 
     allOtherEquipment: async (root, args, context) => {
-      console.log("Queried for allOtherEquipment")
       const client = await pool.connect()
 
       // Uncomment once testing of views has been complete
@@ -246,28 +248,46 @@ const resolvers = {
       try {
         if(args.type === 'available'){
           console.log("Queried for available Equipment")
-          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number, u.avatar_url FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id IS NULL AND hold_user_id IS NULL AND user_id != ($1)', values)
+          const { rows } = await client
+            .query(
+              `SELECT e.id, e.category, e.weight, u.name, u.number, u.avatar_url 
+              FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id 
+              WHERE transaction_id IS NULL AND hold_user_id IS NULL AND user_id != ($1)`, 
+              values
+            )
           console.table(rows)
-          console.log(rows)
           return rows
-        } else if (args.type === 'hold'){
-          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number, u.avatar_url FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE hold_user_id IS NOT NULL AND user_id != ($1)', values)
+        }
+        else if (args.type === 'hold'){
+          const { rows } = await client
+            .query(
+              `SELECT e.id, e.category, e.weight, u.name, u.number, u.avatar_url 
+              FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id 
+              WHERE hold_user_id IS NOT NULL AND user_id != ($1)`, 
+              values
+            )
           console.table(rows)
-          console.log(rows)
           return rows
-        } else if (args.type === 'checked out') {
-          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number, u.avatar_url FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id IS NOT NULL AND user_id != ($1)', values)
+        }
+        else if (args.type === 'checked out') {
+          const { rows } = await client
+            .query(
+              `SELECT e.id, e.category, e.weight, u.name, u.number, u.avatar_url 
+              FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id 
+              WHERE transaction_id IS NOT NULL AND user_id != ($1)`, 
+              values
+            )
           console.table(rows)
-          console.log(rows)
           return rows
-        } else
+        }
+        else
           console.log("Failed to provide an argument")
-
-      } catch (error) {
+      }
+      catch (error) {
         console.log(`WARNING: ${error}`)
-      } finally {
+      }
+      finally {
         client.release()
-        console.log('Client has been successfully released!')
       }
     },
 
@@ -285,28 +305,46 @@ const resolvers = {
 
       try {
         if(args.type === 'available'){
-          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id IS NULL AND hold_user_id IS NULL AND user_id = ($1)', values)
+          const { rows } = await client
+            .query(
+              `SELECT e.id, e.category, e.weight, u.name, u.number 
+              FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id 
+              WHERE transaction_id IS NULL AND hold_user_id IS NULL AND user_id = ($1)`, 
+              values
+            )
           console.table(rows)
-          console.log(rows)
           return rows
-        } else if (args.type === 'hold'){
-          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE hold_user_id IS NOT NULL AND user_id = ($1)', values)
+        }
+        else if (args.type === 'hold'){
+          const { rows } = await client
+            .query(
+              `SELECT e.id, e.category, e.weight, u.name, u.number 
+              FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id 
+              WHERE hold_user_id IS NOT NULL AND user_id = ($1)`, 
+              values
+            )
           console.table(rows)
-          console.log(rows)
           return rows
-        } else if (args.type === 'checked out') {
-          const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.name, u.number FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id WHERE transaction_id IS NOT NULL AND user_id = ($1)', values)
+        }
+        else if (args.type === 'checked out') {
+          const { rows } = await client
+            .query(
+              `SELECT e.id, e.category, e.weight, u.name, u.number 
+              FROM equipment AS e INNER JOIN user_table AS u ON e.user_id = u.id 
+              WHERE transaction_id IS NOT NULL AND user_id = ($1)`, 
+              values
+            )
           console.table(rows)
-          console.log(rows)
           return rows
-        } else
-          console.log("Failed to provide an argument")
-
-      } catch (error) {
+        }
+        else
+          console.log(`Failed to provide an argument`)
+      }
+      catch (error) {
         console.log(`WARNING: ${error}`)
-      } finally {
+      }
+      finally {
         client.release()
-        console.log('Client has been successfully released!')
       }
     },
 
@@ -323,16 +361,22 @@ const resolvers = {
       ]
 
       try {
-        const { rows } = await client.query('SELECT e.id, e.category, e.weight, t.check_out_timestamp, t.check_in_timestamp, u.name, u.number, u.avatar_url FROM transactions as t INNER JOIN user_table as u ON t.lender_id = u.id INNER JOIN equipment as e ON t.equipment_id = e.id WHERE t.borrower_id = ($1)', values)
+        const { rows } = await client
+          .query(
+            `SELECT e.id, e.category, e.weight, t.check_out_timestamp, t.check_in_timestamp, 
+            u.name, u.number, u.avatar_url 
+            FROM transactions as t INNER JOIN user_table as u ON t.lender_id = u.id 
+            INNER JOIN equipment as e ON t.equipment_id = e.id WHERE t.borrower_id = ($1)`, 
+            values
+          )
         console.table(rows)
-        console.log(rows)
         return rows
-
-      } catch (error) {
+      }
+      catch (error) {
         console.log(`WARNING: ${error}`)
-      } finally {
+      }
+      finally {
         client.release()
-        console.log('Client has been successfully released!')
       }
     },
 
@@ -349,14 +393,22 @@ const resolvers = {
       ]
 
       try {
-        const { rows } = await client.query('SELECT e.id, e.category, e.weight, t.check_out_timestamp, t.check_in_timestamp, u.name, u.number, u.avatar_url FROM transactions as t INNER JOIN user_table as u ON t.borrower_id = u.id INNER JOIN equipment as e ON t.equipment_id = e.id WHERE t.lender_id = ($1)', values)
+        const { rows } = await client
+          .query(
+            `SELECT e.id, e.category, e.weight, t.check_out_timestamp, 
+            t.check_in_timestamp, u.name, u.number, u.avatar_url 
+            FROM transactions as t INNER JOIN user_table as u ON t.borrower_id = u.id 
+            INNER JOIN equipment as e ON t.equipment_id = e.id 
+            WHERE t.lender_id = ($1)`, 
+            values
+          )
         console.table(rows)
-        console.log(rows)
         return rows
-
-      } catch (error) {
+      }
+      catch (error) {
         console.log(`WARNING: ${error}`)
-      } finally {
+      }
+      finally {
         client.release()
         console.log('Client has been successfully released!')
       }
@@ -375,16 +427,20 @@ const resolvers = {
       ]
 
       try {
-        const { rows } = await client.query('SELECT u.name, u.number, u.email, u.house, u.street, u.city, u.avatar_url FROM user_table AS u WHERE id = ($1)', values)
+        const { rows } = await client
+          .query(
+            `SELECT u.name, u.number, u.email, u.house, u.street, u.city, u.avatar_url 
+            FROM user_table AS u WHERE id = ($1)`, 
+            values
+          )
         console.table(rows)
-        console.log(rows)
         return rows
-
-      } catch (error) {
+      }
+      catch (error) {
         console.log(`WARNING: ${error}`)
-      } finally {
+      }
+      finally {
         client.release()
-        console.log('Client has been successfully released!')
       }
     },
 
@@ -401,16 +457,20 @@ const resolvers = {
       ]
 
       try {
-        const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.avatar_url FROM equipment as e INNER JOIN user_table as u ON e.user_id = u.id WHERE hold_user_id = ($1)', values)
+        const { rows } = await client
+          .query(
+            `SELECT e.id, e.category, e.weight, u.avatar_url FROM equipment as e 
+            INNER JOIN user_table as u ON e.user_id = u.id WHERE hold_user_id = ($1)`, 
+            values
+          )
         console.table(rows)
-        console.log(rows)
         return rows
-
-      } catch (error) {
+      }
+      catch (error) {
         console.log(`WARNING: ${error}`)
-      } finally {
+      }
+      finally {
         client.release()
-        console.log('Client has been successfully released!')
       }
     },
 
@@ -427,23 +487,29 @@ const resolvers = {
       ]
 
       try {
-        const { rows } = await client.query('SELECT e.id, e.category, e.weight, u.avatar_url FROM transactions as t INNER JOIN equipment as e on t.lender_id = e.user_id INNER JOIN user_table as u on t.lender_id = u.id WHERE check_in_timestamp IS NULL AND borrower_id = ($1)', values)
+        const { rows } = await client
+          .query(
+            `SELECT e.id, e.category, e.weight, u.avatar_url FROM transactions as t 
+            INNER JOIN equipment as e on t.lender_id = e.user_id 
+            INNER JOIN user_table as u on t.lender_id = u.id 
+            WHERE check_in_timestamp IS NULL AND borrower_id = ($1)`, 
+            values
+          )
         console.table(rows)
-        console.log(rows)
         return rows
-
-      } catch (error) {
+      }
+      catch (error) {
         console.log(`WARNING: ${error}`)
-      } finally {
+      }
+      finally {
         client.release()
-        console.log('Client has been successfully released!')
       }
     },
 
 
   },
 
-
+// -----------------------
 
   Mutation: {
     createUser: async (root, args, context) => {
@@ -468,15 +534,20 @@ const resolvers = {
       ]
       
       try {
-        const { rows } = await client.query('INSERT INTO user_table (id, name, password_hash, email, house, street, city) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', values)
+        const { rows } = await client
+          .query(
+            `INSERT INTO user_table (id, name, password_hash, email, house, street, city) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`, 
+            values
+          )
         console.table(rows)
         return rows[0]
-
-      } catch (error) {
+      }
+      catch (error) {
           console.log(`WARNING: ${error}`)
-      } finally {
+      }
+      finally {
           client.release()
-          console.log('Client has been successfully released!')
       }
     },
 
@@ -506,16 +577,20 @@ const resolvers = {
       ]
       
       try {
-        
-        const { rows } = await client.query('INSERT INTO equipment (id, user_id, category, weight) VALUES ($1, $2, $3, $4) RETURNING *', values)
+        const { rows } = await client
+          .query(
+            `INSERT INTO equipment (id, user_id, category, weight) VALUES ($1, $2, $3, $4) 
+            RETURNING *`, 
+            values
+          )
         console.table(rows)
         return rows[0]
-
-      } catch (error) {
-          console.log(`WARNING: ${error}`)
-      } finally {
-          client.release()
-          console.log('Client has been successfully released!')
+      }
+      catch (error) {
+        console.log(`WARNING: ${error}`)
+      }
+      finally {
+        client.release()
       }
     },
 
@@ -540,16 +615,20 @@ const resolvers = {
       // ]
       
       try {
-        
-        const { rows } = await client.query('UPDATE equipment SET hold_user_id = ($1) WHERE id = ($2) RETURNING *', values)
+        const { rows } = await client
+          .query(
+            `UPDATE equipment SET hold_user_id = ($1) 
+            WHERE id = ($2) RETURNING *`, 
+            values
+          )
         console.table(rows)
         return rows[0]
-
-      } catch (error) {
-          console.log(`WARNING: ${error}`)
-      } finally {
-          client.release()
-          console.log('Client has been successfully released!')
+      }
+      catch (error) {
+        console.log(`WARNING: ${error}`)
+      }
+      finally {
+        client.release()
       }
     },
 
@@ -568,15 +647,20 @@ const resolvers = {
       ]
       
       try {
-        const { rows } = await client.query('UPDATE equipment SET hold_user_id = NULL WHERE user_id = ($1) AND id = ($2) RETURNING *', values)
+        const { rows } = await client
+          .query(
+            `UPDATE equipment SET hold_user_id = NULL 
+            WHERE user_id = ($1) AND id = ($2) RETURNING *`, 
+            values
+          )
         console.table(rows)
         return rows[0]
-
-      } catch (error) {
-          console.log(`WARNING: ${error}`)
-      } finally {
-          client.release()
-          console.log('Client has been successfully released!')
+      }
+      catch (error) {
+        console.log(`WARNING: ${error}`)
+      }
+      finally {
+        client.release()
       }
     },
 
@@ -595,15 +679,20 @@ const resolvers = {
       ]
       
       try {
-        const { rows } = await client.query('UPDATE equipment SET hold_user_id = NULL WHERE hold_user_id = ($1) AND id = ($2) RETURNING *', values)
+        const { rows } = await client
+          .query(
+            `UPDATE equipment SET hold_user_id = NULL WHERE hold_user_id = ($1) 
+            AND id = ($2) RETURNING *`, 
+            values
+          )
         console.table(rows)
         return rows[0]
-
-      } catch (error) {
-          console.log(`WARNING: ${error}`)
-      } finally {
-          client.release()
-          console.log('Client has been successfully released!')
+      }
+      catch (error) {
+        console.log(`WARNING: ${error}`)
+      }
+      finally {
+        client.release()
       }
     },
 
@@ -617,12 +706,16 @@ const resolvers = {
 
       try {
         // Retrieve the ID of the user that placed the hold
-        const { rows } = await client.query('SELECT hold_user_id FROM equipment WHERE id = ($1) AND user_id = ($2)', [args.id, userID])
+        const { rows } = await client
+          .query(
+            `SELECT hold_user_id FROM equipment WHERE id = ($1) AND user_id = ($2)`, 
+            [args.id, userID]
+          )
         const hold_user_id = rows[0].hold_user_id
         
         // Generate the necessary data to create a transaction
         // Create the transaction ID
-        const id = crypto.randomBytes(8).toString("hex")
+        const id = crypto.randomBytes(8).toString('hex')
 
         // Create the Check Out Timestamp
         const currentTS = Date.now()
@@ -637,8 +730,18 @@ const resolvers = {
           checkOutTS
         ]
 
-        const result = await client.query('INSERT INTO transactions (id, borrower_id, lender_id, equipment_id, check_out_timestamp) VALUES ($1, $2, $3, $4, $5) RETURNING *', values)
-        const update = await client.query('UPDATE equipment SET transaction_id = ($1), hold_user_id = NULL WHERE id = ($2) RETURNING *', [result.rows[0].id, args.id])
+        const result = await client
+          .query(
+            `INSERT INTO transactions (id, borrower_id, lender_id, equipment_id, check_out_timestamp) 
+            VALUES ($1, $2, $3, $4, $5) RETURNING *`, 
+            values
+          )
+        const update = await client
+          .query(
+            `UPDATE equipment SET transaction_id = ($1), hold_user_id = NULL WHERE id = ($2) 
+            RETURNING *`, 
+            [result.rows[0].id, args.id]
+          )
 
         console.table(result.rows)
         console.log(`CO: ${result.rows[0].check_out_timestamp}`)
@@ -646,12 +749,12 @@ const resolvers = {
         console.table(update.rows)
 
         return result.rows[0]
-
-      } catch (error) {
-          console.log(`WARNING: ${error}`)
-      } finally {
-          client.release()
-          console.log('Client has been successfully released!')
+      }
+      catch (error) {
+        console.log(`WARNING: ${error}`)
+      }
+      finally {
+        client.release()
       }
     },
     
@@ -669,7 +772,11 @@ const resolvers = {
         const checkInTS = new Date(currentTS).toLocaleString('en-US', { timeZone: 'America/Toronto' })
 
         // Querying DB for the current transaction ID
-        const query = await client.query('SELECT transaction_id FROM equipment WHERE id = ($1)', [args.id])
+        const query = await client
+          .query(
+            `SELECT transaction_id FROM equipment WHERE id = ($1)`, 
+            [args.id]
+          )
         console.table(query.rows)
 
         const values = [
@@ -678,19 +785,29 @@ const resolvers = {
         ]
 
         // Complete the Transaction
-        const { rows } = await client.query('UPDATE transactions SET check_in_timestamp = ($1) WHERE id = ($2) RETURNING *', values)
+        const { rows } = await client
+          .query(
+            `UPDATE transactions SET check_in_timestamp = ($1) 
+            WHERE id = ($2) RETURNING *`, 
+            values
+          )
 
         // Clear the Transaction ID field
-        await client.query('UPDATE equipment SET transaction_id = NULL WHERE id = ($1)', [args.id])
+        await client
+          .query(
+            `UPDATE equipment SET transaction_id = NULL WHERE id = ($1)`, 
+            [args.id]
+          )
 
         console.table(rows)
         return rows[0]
 
-      } catch (error) {
-          console.log(`WARNING: ${error}`)
-      } finally {
-          client.release()
-          console.log('Client has been successfully released!')
+      }
+      catch (error) {
+        console.log(`WARNING: ${error}`)
+      }
+      finally {
+        client.release()
       }
     },
 
@@ -699,7 +816,11 @@ const resolvers = {
 
       try {
         // find user in PG using the provided email
-        const { rows } = await client.query('SELECT * from user_table WHERE email = ($1)', [args.email])
+        const { rows } = await client
+          .query(
+            `SELECT * from user_table WHERE email = ($1)`, 
+            [args.email]
+          )
         const user = rows[0]
         const pwh = user.password_hash
 
@@ -710,7 +831,7 @@ const resolvers = {
         
         // If incorrect execution jumps to the catch block
         if (!(user && passwordCorrect)){
-          throw new UserInputError("wrong credentials")
+          throw new UserInputError(`wrong credentials`)
         }
 
         // For now just send the user's id
@@ -723,11 +844,11 @@ const resolvers = {
 
         // Send the token
         return {value: token}
-      } catch (error) {
-          throw new UserInputError("wrong credentials")
+      }
+      catch (error) {
+        throw new UserInputError(`wrong credentials => ${error}`)
       } finally {
           client.release()
-          console.log('Client has been successfully released!')
       }
     }
 

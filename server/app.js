@@ -23,7 +23,7 @@ pool.on('error', (err, client) => {
 
 // Initializing the Express Server
 const app = express()
-const port = process.env.PORT || 3006
+const port = process.env.PORT || 3005
 app.listen(port, () => {
   console.log(`Gym Share is listening at ${port}`)
 })
