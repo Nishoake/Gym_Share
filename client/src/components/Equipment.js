@@ -4,6 +4,7 @@ import AvailableTable from './AvailableTable'
 import ActiveTable from './ActiveTable'
 import { MY_EQUIPMENT } from '../queries'
 import { ADD_EQUIPMENT, REMOVE_HOLD, CHECK_OUT, CHECK_IN } from '../mutations'
+import { categoryOptions, weightOptions } from '../data/options'
 import Select from 'react-select'
 
 const Equipment = () => {
@@ -132,117 +133,21 @@ const Equipment = () => {
     if (green.data) {
       setAvailable(green.data.myEquipment)
     }
-  }, [green.data]) // eslint-disable-line
+  }, [green.data])
 
   // Equipment on hold Hook
   useEffect(() => {
     if (yellow.data) {
       setOnHold(yellow.data.myEquipment)
     }
-  }, [yellow.data]) // eslint-disable-line
+  }, [yellow.data])
 
   // Equipment checked out Hook
   useEffect(() => {
     if (red.data) {
       setCheckedOut(red.data.myEquipment)
     }
-  }, [red.data]) // eslint-disable-line
-
-  // React-Select options
-  // Will move to a config file
-  const categoryOptions = [
-    {
-      value: 'Dumbbell',
-      label: 'Dumbbell'
-    },
-    {
-      value: 'Kettlebell',
-      label: 'Kettlebell'
-    }
-  ]
-
-  const weightOptions = [
-    {
-      value: 5,
-      label: '5'
-    },
-    {
-      value: 10,
-      label: '10'
-    },
-    {
-      value: 15,
-      label: '15'
-    },
-    {
-      value: 20,
-      label: '20'
-    },
-    {
-      value: 25,
-      label: '25'
-    },
-    {
-      value: 30,
-      label: '30'
-    },
-    {
-      value: 35,
-      label: '35'
-    },
-    {
-      value: 40,
-      label: '40'
-    },
-    {
-      value: 45,
-      label: '45'
-    },
-    {
-      value: 50,
-      label: '50'
-    },
-    {
-      value: 55,
-      label: '55'
-    },
-    {
-      value: 60,
-      label: '60'
-    },
-    {
-      value: 65,
-      label: '65'
-    },
-    {
-      value: 70,
-      label: '70'
-    },
-    {
-      value: 75,
-      label: '75'
-    },
-    {
-      value: 80,
-      label: '80'
-    },
-    {
-      value: 85,
-      label: '85'
-    },
-    {
-      value: 90,
-      label: '90'
-    },
-    {
-      value: 95,
-      label: '95'
-    },
-    {
-      value: 100,
-      label: '100'
-    },
-  ]
+  }, [red.data])
 
   if (green.loading || yellow.loading || red.loading) {
     return <div>loading...</div>
@@ -273,8 +178,6 @@ const Equipment = () => {
           primaryButtonLabel="Check In"
         />
       </div>
-
-      {/* Will add form validation after and add CSS styles, specifically the margin to get rid of the br elements*/}
       <div className="view-header">
         <form onSubmit={newEquipment}>
           <div>

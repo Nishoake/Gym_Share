@@ -58,12 +58,10 @@ const Profile = () => {
 
   // Event handler we will render to call the mutation, cancelHold
   const holdRemove = async (equipment) => {
-
     await cancelHold({
       variables: { id: equipment }
     })
   }
-
 
   if (account.loading && equipmentCount.loading && myHolds.loading && myCheckOuts.loading) {
     return <div>loading...</div>
@@ -77,36 +75,25 @@ const Profile = () => {
         <div className="rows">
           <div className="card">
             <h2 style={{"text-decoration": "underline"}}>Account Info:</h2>
-
             <p><b>Name:</b> {info.name}</p>
             <p><b>Number:</b> {info.number}</p>
             <p><b>Email:</b> {info.email}</p>
             <p><b>House:</b> {info.house}</p>
             <p><b>Street:</b> {info.street}</p>
             <p><b>City:</b> {info.city}</p>
-            
           </div>
           <div className="card">
             <h2 style={{"text-decoration": "underline"}}>Stats For Me:</h2>
-
             <p><b># of Equipment on Platform:</b></p>
             <h1>{count}</h1>
-            
           </div>
         </div>
         <div className="rows">
-
           <ActiveTable primaryLabel="Equipment I Have Requested:" secondaryLabel="Owner" equipment={holds} primaryFunction={holdRemove} primaryButtonLabel="Cancel Hold"/>
-          
           <ActiveTable primaryLabel="Equipment I Have Checked Out:" secondaryLabel="Owner" equipment={checkOuts} />
-
         </div>
-        
-
     </div>
-    
 
-    
   )
 }
 

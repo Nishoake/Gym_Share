@@ -30,7 +30,7 @@ const Marketplace = () => {
     ]
   })
 
-  // Event handler we will render to call the mutation, addHold
+  // Event handler will render to call the mutation, addHold
   const placeHold = async (equipment) => {
     await addHold({
       variables: { id: equipment }
@@ -45,21 +45,7 @@ const Marketplace = () => {
     if (green.data) {
       setAvailable(green.data.allOtherEquipment)
     }
-  }, [green.data]) // eslint-disable-line
-
-  // // Equipment on hold Hook
-  // useEffect(() => {
-  //   if(yellow.data){
-  //     setOnHold(yellow.data.allOtherEquipment)
-  //   }
-  // }, [yellow.data]) // eslint-disable-line
-
-  // // Equipment checked out Hook
-  // useEffect(() => {
-  //   if(red.data){
-  //     setCheckedOut(red.data.allOtherEquipment)
-  //   }
-  // }, [red.data]) // eslint-disable-line
+  }, [green.data])
 
   if (green.loading || yellow.loading || red.loading)  {
     return <div>loading...</div>

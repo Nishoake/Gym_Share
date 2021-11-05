@@ -22,28 +22,6 @@ const profilePictureURL = 'https://cdn2.bulbagarden.net/upload/7/75/VSBrock_Mast
 const userName = 'Brock'
 
 function App() {
-
-  // In production will fetch user profile image from API
-  // But for proof-of-concept to keep loading performance quick will use constants
-  // // Application State
-  // const [info, setInfo] = useState([])
-
-  // // Defining the useQuery Hooks
-  // const account = useQuery(MY_ACCOUNT)
-
-  // // Profile Info Hook
-  // useEffect(() => {
-  //   if (account.data) {
-  //     setInfo(account.data.myAccount[0])
-  //   }
-  // }, [account.data]) // eslint-disable-line
-
-  // if (account.loading) {
-  //   return <div>loading...</div>
-  // } else if (account.error) {
-  //   return <div>Error Gym Share data</div>
-  // }
-
   return (
     <div>
 

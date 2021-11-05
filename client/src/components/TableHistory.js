@@ -1,7 +1,6 @@
 import React from 'react'
 
 const TableData = ({ transactions, columnLabel }) => {
-  
   return (
     <div className="card">
       <table>

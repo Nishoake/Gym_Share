@@ -2,8 +2,6 @@ import React, { useState, useEffect }from 'react'
 import { useQuery } from '@apollo/client'
 import { MY_BORROWING_HISTORY } from '../queries'
 import TableHistory from './TableHistory'
-import Input from './Input'
-
 const BorrowingHistory = () => {
 
   // Application State
@@ -11,7 +9,6 @@ const BorrowingHistory = () => {
   const [weightQuery, setWeightQuery] = useState('')
   const [categoryQuery, setCategoryQuery] = useState('')
   const [lenderQuery, setLenderQuery] = useState('')
-  // const [selectedEquipment, setSelectedEquipment] = useState(null)
 
   // Defining the useQuery Hooks
   const ledger = useQuery(MY_BORROWING_HISTORY)
@@ -21,36 +18,7 @@ const BorrowingHistory = () => {
     if (ledger.data) {
       setTransactions(ledger.data.myBorrowingHistory)
     }
-  }, [ledger.data]) // eslint-disable-line
-
-  // // Render filtered results of transactions array
-  // const queryFilter = async () => {
-  //   // Filter transactions by weight
-  //   async function weightFilter(arrayToFilter) {
-  //     const weightFilteredTransactions = arrayToFilter.filter(t => t.weight.toUpperCase() === weightQuery.toUpperCase())
-
-  //     return weightFilteredTransactions
-  //   }
-
-  //   // Filter transactions by category
-  //   async function categoryFilter(arrayToFilter) {
-  //     const categoryFilteredTransactions = arrayToFilter.filter(t => t.category.toUpperCase() === categoryQuery.toUpperCase())
-
-  //     return categoryFilteredTransactions
-  //   }
-
-  //   // Filter transactions by lender
-  //   async function lenderFilter(arrayToFilter) {
-  //     const lenderFilteredTransactions = arrayToFilter.filter(t => t.name.toUpperCase() === lenderQuery.toUpperCase())
-
-  //     return lenderFilteredTransactions
-  //   }
-
-  //   if(weightQuery || categoryQuery || lenderQuery){
-  //     return weightFilter(await categoryFilter(await lenderFilter(transactions)))
-  //   } else
-  //     return transactions
-  // }
+  }, [ledger.data])
 
   // Controlled Component Functions
   const handleWeightQuery = (event) => {
@@ -125,26 +93,6 @@ const BorrowingHistory = () => {
       <h3 className="view-header">
         Breakdown of Your Borrowing:
       </h3>
-
-      {/* <Input
-        label="Filter by Weight"
-        newInfo={weightQuery}
-        handleInfoChange={handleWeightQuery}
-      />
-      <Input
-        label="Filter by Category"
-        newInfo={categoryQuery}
-        handleInfoChange={handleCategoryQuery}
-      />
-      <Input
-        label="Filter by Lender Name"
-        newInfo={lenderQuery}
-        handleInfoChange={handleLenderQuery}
-      />
-      <button
-        onClick={() => console.log('button clicked')}
-      />
-      <br/> */}
       <div className="view-header">
         <table>
           <tbody>
