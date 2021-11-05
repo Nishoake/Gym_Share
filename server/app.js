@@ -1,25 +1,10 @@
 const express = require('express')
 const { ApolloServer } = require('apollo-server-express')
 const { typeDefs, resolvers } = require('./schema')
+const { pool } = require('./utility/database')
 const jwt = require('jsonwebtoken')
 
 require('dotenv').config()
-
-
-// Setup the database connection
-const { Pool } = require('pg')
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-})
-pool.on('error', (err, client) => {
-  console.error('Unexpected error on idle client', err)
-  process.exit(-1)
-})
-
 
 // Initializing the Express Server
 const app = express()
@@ -38,7 +23,6 @@ const server = new ApolloServer({
     const client = await pool.connect()
 
     try {
-      // console.log(`Running the Context Initialization Function`)
       const auth = req ? req.headers.authorization : null
 
       if (auth && auth.toLowerCase().startsWith('bearer ')) {
@@ -56,7 +40,6 @@ const server = new ApolloServer({
         console.log(`WARNING: ${error}`)
     } finally {
         client.release()
-        // console.log('Client has been successfully released!')
     }
     
   
