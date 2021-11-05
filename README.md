@@ -6,20 +6,30 @@ Check the project out at: <https://gym-share.herokuapp.com/>
 
 ## How I worked on this project
 
-[placeholder text]
+- Created a Kanban board with Trello
+- Sketched mockups of the UI
 
-## How to navigate the project
+## How to navigate the project highlights
 
-[placeholder text]
+- Modularized GraphQL schema code in: server/schema
+- Responsive CSS Grid styled-components: client/src/components
 
 ## Why I built this project this way
 
-[placeholder text]
+- To apply my knowledge in GraphQL APIs
+- Challenge and learn CSS grid
+- Improve my ability to write SQL queries
+- Implement authentication using JSON Web Tokens
+- Provide a solution for a real-life usecase
 
 ## If I had more time I would change this
 
-[placeholder text]
+- Implement React components for user login
+- Add end-to-end tests with Cypress
+- Set up continuous integration to run the tests on future Pull Requests
 
 ## Available Scripts
 
-[placeholder text]
+In the project directory, you can run:
+
+### `npm start`

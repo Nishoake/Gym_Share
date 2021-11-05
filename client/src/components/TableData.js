@@ -1,11 +1,6 @@
 import React from 'react'
 
 const TableHistory = ({ label, equipment, eventHandler, buttonLabel }) => {
-  // if(equipment[0]) {
-  //   console.log(`Equipment Array = ${JSON.stringify(equipment)}`)
-  //   console.log(`1st ID = ${equipment[1].id}`)
-  // }
-  
   return (
     <div className="card">
       <h2>{label}</h2>
