@@ -2,8 +2,6 @@
 
 Centralized Check-in Check-out system for Gym Equipment.
 
-Check the project out at: <https://gym-share.herokuapp.com/>
-
 ## How I worked on this project
 
 - Created a Kanban board with Trello
