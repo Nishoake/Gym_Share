@@ -14,8 +14,8 @@ Centralized Check-in Check-out system for Gym Equipment.
 
 ## Why I built this project this way
 
-- To apply my knowledge in GraphQL APIs
-- Challenge and learn CSS grid
+- To apply my knowledge of GraphQL APIs
+- To challenge myself and learn CSS grid
 - Improve my ability to write SQL queries
 - Implement authentication using JSON Web Tokens
 - Provide a solution for a real-life usecase
